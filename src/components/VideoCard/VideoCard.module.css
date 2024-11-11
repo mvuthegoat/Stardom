@@ -1,0 +1,52 @@
+.videoCard {
+  width: 100%;
+  background-color: #ffffff; /* White background for a clean look */
+  border-radius: 12px; /* Softer corners */
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+}
+
+.videoCard:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+.videoWrapper {
+  width: 100%;
+  position: relative;
+  background-color: #f0f0f0; /* Light gray for loading state */
+}
+
+.video {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.info {
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-size: 1rem;
+  color: #333; /* Dark gray text for a clean look */
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 70%;
+}
+
+.likes {
+  font-size: 0.9rem;
+  color: #ff4b5c; /* Accent color for likes */
+}

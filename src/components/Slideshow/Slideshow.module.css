@@ -1,0 +1,109 @@
+/* Slideshow.module.css */
+.section {
+  margin: 40px 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 1.75rem;
+  color: #333;
+}
+
+.viewAllLink {
+  font-size: 1rem;
+  color: #007bff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.viewAllLink:hover {
+  color: #0056b3;
+}
+
+.slideshowContainer {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.navButton {
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.navButton:hover:not(:disabled) {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.navButton:disabled {
+  background-color: rgba(0, 0, 0, 0.3);
+  cursor: not-allowed;
+}
+
+.assetsWrapper {
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  justify-content: flex-start; /* Changed from space-between to flex-start */
+  gap: 16px; /* Added gap for consistent spacing */
+}
+
+.emptyState {
+  width: 100%;
+  text-align: center;
+  color: #777;
+  font-size: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .navButton {
+    width: 35px;
+    height: 35px;
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .assetsWrapper {
+    gap: 10px;
+  }
+
+  .navButton {
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.25rem;
+  }
+
+  .navButton {
+    width: 25px;
+    height: 25px;
+    font-size: 0.9rem;
+  }
+}

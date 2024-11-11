@@ -1,0 +1,61 @@
+.tabsContainer {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 100%;
+  padding-left: 0;
+}
+
+.tab {
+  padding: 0.75rem 1.5rem;
+  color: #000;
+  cursor: pointer;
+  font-weight: bold;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.3s ease;
+}
+
+/* Hover effect */
+.tab:hover {
+  color: #333; /* Slightly darken text on hover */
+}
+
+/* Hover underline effect */
+.tab::before {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: black;
+  transition: width 0.3s ease, left 0.3s ease;
+}
+
+/* Expand underline on hover */
+.tab:hover::before {
+  width: 60%; /* Set underline width (adjust as needed) */
+  left: 20%; /* Center align the underline */
+}
+
+/* Active tab styling */
+.active {
+  font-weight: 600;
+  position: relative;
+}
+
+.active::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50%;
+  height: 2px;
+  background-color: black;
+  border-radius: 1px;
+}

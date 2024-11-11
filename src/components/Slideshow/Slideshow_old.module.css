@@ -1,0 +1,89 @@
+.section {
+  margin-bottom: 30px;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 30px;
+}
+
+.title {
+  font-size: 24px;
+  margin: 0;
+}
+
+.viewAllLink {
+  font-size: 16px;
+  text-decoration: none;
+  color: #2a2deb;
+}
+
+.scrollContainerWrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-top: 10px; /* Added padding to allow AssetCards to move up */
+}
+
+.scrollButton {
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 10px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3; /* Ensure buttons are above the header */
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: background 0.3s;
+}
+
+.scrollButton:hover {
+  background: rgba(255, 255, 255, 1);
+}
+
+.scrollButtonLeft {
+  left: 10px;
+}
+
+.scrollButtonRight {
+  right: 10px;
+}
+
+.scrollContainer {
+  display: flex;
+  overflow-x: auto;
+  padding: 0 60px; /* Increased padding to accommodate scroll buttons */
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.scrollContainer::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+@media (max-width: 768px) {
+  .scrollButton {
+    display: none; /* Hide scroll buttons on smaller screens */
+  }
+
+  .scrollContainer {
+    padding: 0 20px;
+  }
+
+  .assetCard {
+    width: 160px;
+    height: 260px;
+    margin: 0 5px;
+  }
+
+  .scrollContainerWrapper {
+    padding-top: 10px; /* Adjust padding for smaller screens */
+  }
+}

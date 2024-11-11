@@ -1,0 +1,26 @@
+.button {
+    padding: 0.5rem 1.5rem;
+    border-radius: 9999px; /* Fully rounded for pill shape */
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in, color 0.2s ease-in;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none; /* No background for inactive state */
+    color: black; /* Black text for inactive state */
+    border: none; /* No border */
+    box-shadow: none; /* Remove box-shadow */
+}
+
+.active {
+    background-color: black; /* Black background for active state */
+    color: white; /* White text for active state */
+}
+
+.icon {
+    margin-right: 0.5rem; /* Space between icon and text */
+    display: flex;
+    align-items: center;
+}

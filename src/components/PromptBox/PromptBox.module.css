@@ -1,0 +1,35 @@
+/* PromptBox.module.css */
+
+.promptBox {
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); /* Soft shadow for floating effect */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.textArea {
+  width: 100%;
+  height: 120px;
+  padding: 12px;
+  border: none;
+  background-color: #f9f9f9;
+  color: #333;
+  font-size: 16px;
+  line-height: 1.6;
+  border-radius: 8px;
+  resize: none;
+  outline: none;
+  box-sizing: border-box;
+
+  /* Typography styling for a clean and fresh look */
+  font-family: Arial, sans-serif;
+  font-weight: 400;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.textArea::placeholder {
+  color: #888; /* Light gray for placeholder text */
+  font-style: italic; /* Italic style for the placeholder */
+}

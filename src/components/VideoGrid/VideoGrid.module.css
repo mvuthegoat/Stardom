@@ -1,0 +1,47 @@
+/* VideoGrid.module.css */
+
+.gridContainer {
+  padding: 1rem;
+  width: 100%;
+}
+
+.videoGrid {
+  display: flex;
+  margin-left: -1rem; /* Compensate for gutter */
+  width: auto;
+}
+
+.videoColumn {
+  padding-left: 1rem; /* Gutter size */
+  background-clip: padding-box;
+}
+
+/* Adjust gutter sizes for medium screens */
+@media (max-width: 900px) {
+  .gridContainer {
+    padding: 0.75rem;
+  }
+
+  .videoGrid {
+    margin-left: -0.75rem;
+  }
+
+  .videoColumn {
+    padding-left: 0.75rem;
+  }
+}
+
+/* Adjust gutter sizes for small screens */
+@media (max-width: 600px) {
+  .gridContainer {
+    padding: 0.5rem;
+  }
+
+  .videoGrid {
+    margin-left: -0.5rem;
+  }
+
+  .videoColumn {
+    padding-left: 0.5rem;
+  }
+}

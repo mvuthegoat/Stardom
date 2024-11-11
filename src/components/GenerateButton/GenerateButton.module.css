@@ -1,0 +1,18 @@
+/* GenerateButton.module.css */
+
+.generateButton {
+  padding: 12px 24px;
+  font-size: 16px;
+  color: #ffffff; /* Original text color */
+  background-color: #272626; /* Original background color */
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for shadow and background */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow initially */
+}
+
+.generateButton:hover {
+    background-color: #1a1a1a; /* Slightly darker background on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* Stronger shadow on hover */
+}

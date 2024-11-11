@@ -1,0 +1,28 @@
+.configButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
+  color: #000000;
+}
+
+.label {
+  font-size: 14px;
+  color: #bbb;
+}
+
+.select {
+  padding: 6px 12px;
+  border-radius: 5px;
+  border: none;
+  background-color: #444;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.select:hover,
+.select:focus {
+  background-color: #555;
+}
