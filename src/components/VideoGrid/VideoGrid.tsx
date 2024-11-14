@@ -1,164 +1,29 @@
-"use client"; // Add this at the top to mark as client component
+// components/VideoGrid.tsx
+
+"use client";
 
 import React from "react";
 import Masonry from "react-masonry-css";
 import VideoCard from "../VideoCard/VideoCard";
+import { Video } from "@/types/videoTypes";
 import styles from "./VideoGrid.module.css";
 
-const sampleVideos = [
-  {
-    title: "Video 1",
-    videoSrc: "../../../memevids/kling_ai5.mp4",
-    likes: 24,
-    cryptoAddress: "0xbA2aE424d960c26247Dd6c32edC70B295c744C43",
-    themeName: "Doge",
-    creators: "Creator 1",
-  },
-  {
-    title: "Video 3",
-    videoSrc: "../../../memevids/kling_ai2.mp4",
-    likes: 37,
-    cryptoAddress: "0xbA2aE424d960c26247Dd6c32edC70B295c744C43",
-    themeName: "Doge",
-    creators: "Creator 1",
-  },
-  {
-    title: "Video 1",
-    videoSrc: "../../../memevids/meme_dog.mp4",
-    likes: 24,
-    cryptoAddress: "0xbA2aE424d960c26247Dd6c32edC70B295c744C43",
-    themeName: "Doge",
-    creators: "Creator 1",
-  },
+interface VideoGridProps {
+  videos: Video[];
+  title?: string;
+}
 
-  {
-    title: "Video 1",
-    videoSrc: "../../../memevids/meme_dog.mp4",
-    likes: 24,
-    cryptoAddress: "0xbA2aE424d960c26247Dd6c32edC70B295c744C43",
-    themeName: "Doge",
-    creators: "Creator 1",
-  },
-
-  {
-    title: "Video 1",
-    videoSrc: "../../../memevids/kling_ai3.mp4",
-    likes: 24,
-    cryptoAddress: "0xbA2aE424d960c26247Dd6c32edC70B295c744C43",
-    themeName: "Doge",
-    creators: "Creator 1",
-  },
-  {
-    title: "Video 3",
-    videoSrc: "../../../memevids/kling_ai4.mp4",
-    likes: 37,
-    cryptoAddress: "0xbA2aE424d960c26247Dd6c32edC70B295c744C43",
-    themeName: "Doge",
-    creators: "Creator 1",
-  },
-  {
-    title: "Video 3",
-    videoSrc: "../../../memevids/kling_ai4.mp4",
-    likes: 37,
-    cryptoAddress: "0xbA2aE424d960c26247Dd6c32edC70B295c744C43",
-    themeName: "Doge",
-    creators: "Creator 1",
-  },
-  {
-    title: "Video 3",
-    videoSrc: "../../../memevids/kling_ai2.mp4",
-    likes: 37,
-    cryptoAddress: "0xbA2aE424d960c26247Dd6c32edC70B295c744C43",
-    themeName: "Doge",
-    creators: "Creator 1",
-  },
-  {
-    title: "Video 1",
-    videoSrc: "../../../memevids/meme_dog.mp4",
-    likes: 24,
-    cryptoAddress: "0xbA2aE424d960c26247Dd6c32edC70B295c744C43",
-    themeName: "Doge",
-    creators: "Creator 1",
-  },
-  {
-    title: "Video 1",
-    videoSrc: "../../../memevids/kling_ai5.mp4",
-    likes: 24,
-    cryptoAddress: "0xbA2aE424d960c26247Dd6c32edC70B295c744C43",
-    themeName: "Doge",
-    creators: "Creator 1",
-  },
-  {
-    title: "Video 1",
-    videoSrc: "../../../memevids/kling_ai1.mp4",
-    likes: 24,
-    cryptoAddress: "0xbA2aE424d960c26247Dd6c32edC70B295c744C43",
-    themeName: "Doge",
-    creators: "Creator 1",
-  },
-
-  {
-    title: "Video 1",
-    videoSrc: "../../../memevids/kling_ai5.mp4",
-    likes: 24,
-    cryptoAddress: "0xbA2aE424d960c26247Dd6c32edC70B295c744C43",
-    themeName: "Doge",
-    creators: "Creator 1",
-  },
-  {
-    title: "Video 1",
-    videoSrc: "../../../memevids/meme_dog.mp4",
-    likes: 24,
-    cryptoAddress: "0xbA2aE424d960c26247Dd6c32edC70B295c744C43",
-    themeName: "Doge",
-    creators: "Creator 1",
-  },
-
-  {
-    title: "Video 1",
-    videoSrc: "../../../memevids/meme_dog.mp4",
-    likes: 24,
-    cryptoAddress: "0xbA2aE424d960c26247Dd6c32edC70B295c744C43",
-    themeName: "Doge",
-    creators: "Creator 1",
-  },
-
-  {
-    title: "Video 1",
-    videoSrc: "../../../memevids/meme_dog.mp4",
-    likes: 24,
-    cryptoAddress: "0xbA2aE424d960c26247Dd6c32edC70B295c744C43",
-    themeName: "Doge",
-    creators: "Creator 1",
-  },
-];
-
-const VideoGrid: React.FC = () => {
-  const breakpointColumns = {
-    default: 5, // More columns by default
-    1600: 4,
-    1200: 3,
-    900: 2,
-    600: 1,
-  };
-
+const VideoGrid: React.FC<VideoGridProps> = ({ videos, title }) => {
   return (
     <div className={styles.gridContainer}>
+      {title && <h2 className={styles.gridTitle}>{title}</h2>}
       <Masonry
-        breakpointCols={breakpointColumns}
+        breakpointCols={{ default: 5, 1600: 4, 1200: 3, 900: 2, 600: 1 }}
         className={styles.videoGrid}
         columnClassName={styles.videoColumn}
       >
-        {sampleVideos.map((video, index) => (
-          <VideoCard
-            key={index}
-            title={video.title}
-            videoSrc={video.videoSrc}
-            likes={video.likes}
-            cryptoAddress={video.cryptoAddress}
-            themeName={video.themeName}
-            creators={video.creators}
-          />
+        {videos.map((video) => (
+          <VideoCard key={video.id} {...video} />
         ))}
       </Masonry>
     </div>
