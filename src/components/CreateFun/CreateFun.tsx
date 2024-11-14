@@ -12,6 +12,7 @@ import {
   PageLayout,
 } from "../../components";
 import styles from "./CreateFun.module.css";
+import PostButton from "../PostButton/PostButton";
 
 const CreateFun = () => {
   const [image, setImage] = useState<File | null>(null);
@@ -61,6 +62,7 @@ const CreateFun = () => {
       </div>
       <div className={styles.outputSection}>
         <OutputVideoBox videoUrl={videoUrl} />
+        <PostButton videoUrl={videoUrl} />
       </div>
     </div>
   );

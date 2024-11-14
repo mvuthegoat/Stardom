@@ -48,11 +48,10 @@
   flex: 0.6;
   display: flex;
   justify-content: center;
-  align-items: center;
   padding-left: 20px;
   background-color: #ffffff;
   border-radius: 8px;
   height: 100%;
-  /* Full height of the container */
-  min-height: 300px;
+  flex-direction: column;
+  gap: 20px;
 }
