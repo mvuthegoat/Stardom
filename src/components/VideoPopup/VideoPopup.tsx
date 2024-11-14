@@ -1,25 +1,21 @@
-// VideoPopup.tsx
 import React, { useRef, useEffect } from "react";
 import styles from "./VideoPopup.module.css";
 import { FaTimes, FaHeart } from "react-icons/fa";
+import { VideoCardProps } from "../VideoCard/VideoCard";
 
-interface VideoPopupProps {
-  title: string;
-  videoSrc: string;
-  likes: number;
-  cryptoAddress: string;
-  themeName: string;
-  creators: string;
+interface VideoPopupProps extends VideoCardProps {
   onClose: () => void;
 }
 
 const VideoPopup: React.FC<VideoPopupProps> = ({
   title,
-  videoSrc,
+  video_url,
   likes,
-  cryptoAddress,
-  themeName,
-  creators,
+  crypto_address,
+  meme_origin,
+  creator_name,
+  dex_chart,
+  description,
   onClose,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -74,7 +70,7 @@ const VideoPopup: React.FC<VideoPopupProps> = ({
           <div className={styles.videoSection}>
             <video
               ref={videoRef}
-              src={videoSrc}
+              src={video_url}
               className={styles.video}
               controls
               autoPlay
@@ -91,13 +87,19 @@ const VideoPopup: React.FC<VideoPopupProps> = ({
                 <span>{likes} Likes</span>
               </div>
               <div className={styles.detailItem}>
-                <strong>Crypto Address:</strong> {cryptoAddress}
+                <strong>Description:</strong> {description}
               </div>
               <div className={styles.detailItem}>
-                <strong>Theme Name:</strong> {themeName}
+                <strong>Crypto Address:</strong> {crypto_address}
               </div>
               <div className={styles.detailItem}>
-                <strong>Creators:</strong> {creators}
+                <strong>Original Meme:</strong> {meme_origin}
+              </div>
+              <div className={styles.detailItem}>
+                <strong>Creator:</strong> {creator_name}
+              </div>
+              <div className={styles.detailItem}>
+                <strong>Trade on:</strong> {dex_chart}
               </div>
             </div>
             {/* <button className={styles.actionButton} onClick={onClose}>

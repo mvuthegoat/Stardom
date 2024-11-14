@@ -29,7 +29,7 @@
   object-fit: contain;
 }
 
-.info {
+/* .info {
   padding: 1rem;
   display: flex;
   justify-content: space-between;
@@ -38,15 +38,30 @@
 
 .title {
   font-size: 1rem;
-  color: #333; /* Dark gray text for a clean look */
+  color: #333; 
   margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: 70%;
-}
+} */
 
 .likes {
-  font-size: 0.9rem;
-  color: #ff4b5c; /* Accent color for likes */
+  font-size: 0.85rem;
+  color: #6b6a6a; /* Accent color for likes */
+}
+
+
+.videoTitle {
+  font-family: 'Roboto', sans-serif;
+  font-size:0.95rem; /* Adjust as needed */
+  color: #343333; /* Dark gray for contrast */
+  text-align: left; /* Center align */
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between; /* Align title to left and likes to right */
+  align-items: center;
+  margin-right: 0.65rem;
 }

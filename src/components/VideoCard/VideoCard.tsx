@@ -1,26 +1,22 @@
-// VideoCard.tsx
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
 import styles from "./VideoCard.module.css";
 import VideoPopup from "../VideoPopup/VideoPopup";
+import { Video } from "@/types/videoTypes";
 
-interface VideoCardProps {
-  title: string;
-  videoSrc: string;
-  likes: number;
-  cryptoAddress: string;
-  themeName: string;
-  creators: string;
-}
+export type VideoCardProps = Omit<Video, 'thumbnail_url'>;
 
 const VideoCard: React.FC<VideoCardProps> = ({
+  id,
   title,
-  videoSrc,
+  video_url,
   likes,
-  cryptoAddress,
-  themeName,
-  creators,
+  crypto_address,
+  meme_origin,
+  creator_name,
+  dex_chart,
+  description,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [showPopup, setShowPopup] = useState(false);
@@ -66,29 +62,36 @@ const VideoCard: React.FC<VideoCardProps> = ({
         <div className={styles.videoWrapper}>
           <video
             ref={videoRef}
-            src={videoSrc}
+            src={video_url}
             className={styles.video}
             muted
             loop
             preload="metadata"
           />
         </div>
-        <div className={styles.info}>
+        {/* <div className={styles.info}>
           <p className={styles.title}>{title}</p>
-          <p className={styles.likes}>❤️ {likes}</p>
-        </div>
+          <p className={styles.likes}>▶ {likes}</p>
+        </div> */}
       </div>
       {showPopup && (
         <VideoPopup
+          id={id}
           title={title}
-          videoSrc={videoSrc}
+          video_url={video_url}
           likes={likes}
-          cryptoAddress={cryptoAddress}
-          themeName={themeName}
-          creators={creators}
+          crypto_address={crypto_address}
+          meme_origin={meme_origin}
+          creator_name={creator_name}
+          dex_chart={dex_chart}
+          description={description}
           onClose={handleClosePopup}
         />
       )}
+      <div className={styles.footer}>
+        <h3 className={styles.videoTitle}>{title}</h3>
+        <span className={styles.likes}>▶ {likes}</span>
+      </div>
     </>
   );
 };

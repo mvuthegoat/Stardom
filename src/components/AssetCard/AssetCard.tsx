@@ -22,7 +22,7 @@ const AssetCard: React.FC<AssetCardProps> = ({ asset }) => {
 
   const handleClick = () => {
     const slug = slugify(asset.name, { lower: true });
-    router.push(`/collection/${slug}`);
+    router.push(`/meme/${slug}`);
   };
 
   return (

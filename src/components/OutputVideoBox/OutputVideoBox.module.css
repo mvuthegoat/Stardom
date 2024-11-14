@@ -1,16 +1,14 @@
-/* OutputVideoBox.module.css */
-
 .outputVideoBox {
+  position: relative; /* Make the container relative to position the download button */
   width: 100%;
-  /* max-width: 600px; */
   height: 100%;
-  background-color: #ffffff; /* Black background */
+  background-color: #ffffff;
   border-radius: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); /* Floating effect */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 .videoPlayer {
@@ -26,9 +24,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px dashed #c5c3c3; /* Dashed border */
+  border: 2px dashed #c5c3c3;
   border-radius: 8px;
-  color: #c5c3c3; /* Light gray text for placeholder */
+  color: #c5c3c3;
   font-size: 16px;
   text-align: center;
   padding: 20px;
@@ -37,4 +35,24 @@
 
 .placeholder p {
   margin: 0;
+}
+
+.downloadButton {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  color: #000000; /* Blue color for the icon */
+  font-size: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 8px;
+  text-decoration: none;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.downloadButton:hover {
+  background: #757474; /* Blue background on hover */
+  color: #ffffff;
 }

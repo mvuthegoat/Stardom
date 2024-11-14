@@ -16,6 +16,13 @@
   background-clip: padding-box;
 }
 
+.loadingIndicator {
+  text-align: center;
+  padding: 1rem;
+  font-size: 1rem;
+  color: #666; /* Customize this color as desired */
+}
+
 /* Adjust gutter sizes for medium screens */
 @media (max-width: 900px) {
   .gridContainer {

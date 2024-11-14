@@ -5,7 +5,7 @@ export const tabsConfig = [
   },
   {
     label: "Trade Creativity",
-    path: "/have-fun/themes",
+    path: "/have-fun/explore-memecoins",
   },
   // Add more tabs here as needed
 ];
