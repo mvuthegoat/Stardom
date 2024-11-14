@@ -1,4 +1,3 @@
-import React from "react";
 import { PageLayout, VideoGrid } from "../../../components";
 
 interface AssetCollectionPageProps {
@@ -7,15 +6,13 @@ interface AssetCollectionPageProps {
   };
 }
 
-const AssetCollectionPage: React.FC<AssetCollectionPageProps> = ({
-  params,
-}) => {
-  const { collectionName } = params;
+const AssetCollectionPage = async ({ params }: AssetCollectionPageProps) => {
+  const { collectionName } = await params;
 
   return (
     <>
       <h2>Collection: {collectionName}</h2>
-      <VideoGrid />
+      {/* <VideoGrid /> */}
     </>
   );
 };
