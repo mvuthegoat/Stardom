@@ -20,26 +20,47 @@ const VideoCard: React.FC<VideoCardProps> = ({
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [showPopup, setShowPopup] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const delayRef = useRef<number | null>(null); // Ref to store timeout ID
+
+  // Set the last frame as thumbnail when video loads
+  const handleLoadedMetadata = () => {
+    const video = videoRef.current;
+    if (video) {
+      // Set to the last frame
+      video.currentTime = video.duration;
+      setIsLoaded(true);
+    }
+  };
 
   const handleMouseEnter = () => {
     const video = videoRef.current;
-    if (video) {
-      video.currentTime = 0;
-      requestAnimationFrame(() => {
+    if (video && isLoaded) {
+      video.currentTime = 0; // Seek to the first frame
+      video.pause();
+
+      // Start playing after a slight delay (e.g., 500ms)
+      delayRef.current = window.setTimeout(() => {
         video.play().catch((error) => {
           console.warn("Video play interrupted", error);
         });
-      });
+      }, 300); // Adjust the delay as desired
     }
   };
 
   const handleMouseLeave = () => {
     const video = videoRef.current;
-    if (video) {
-      requestAnimationFrame(() => {
-        video.pause();
-        video.currentTime = 0;
-      });
+    if (video && isLoaded) {
+      video.pause();
+
+      // Clear any existing delay to prevent it from starting after mouse leaves
+      if (delayRef.current !== null) {
+        clearTimeout(delayRef.current);
+        delayRef.current = null;
+      }
+
+      // Set back to last frame when mouse leaves
+      video.currentTime = video.duration;
     }
   };
 
@@ -67,12 +88,9 @@ const VideoCard: React.FC<VideoCardProps> = ({
             muted
             loop
             preload="metadata"
+            onLoadedMetadata={handleLoadedMetadata}
           />
         </div>
-        {/* <div className={styles.info}>
-          <p className={styles.title}>{title}</p>
-          <p className={styles.likes}>▶ {likes}</p>
-        </div> */}
       </div>
       {showPopup && (
         <VideoPopup
