@@ -1,5 +1,5 @@
 import React from "react";
-import { PageLayout, CreateFun } from "../../components";
+import { CreateFun } from "../../components";
 
 const CreateFunPage: React.FC = () => {
   return <CreateFun />;

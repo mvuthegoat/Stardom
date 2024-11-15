@@ -1,9 +1,11 @@
-"use client"; 
+// src/app/layout.tsx
+"use client";
 
 import React from "react";
 import { PageLayout, ScrollToTopFix } from "@/components";
-import "./globals.css"; 
+import "./globals.css";
 import { usePathname } from "next/navigation";
+import { WalletProvider } from "@/components/Wallet"; // Updated import path
 
 const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const pathname = usePathname();
@@ -11,10 +13,12 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   return (
     <html lang="en">
-      <ScrollToTopFix />
-      <head>{/* Meta tags, fonts, etc. */}</head>
+      <head />
       <body>
-        <PageLayout showTabs={showTabs}>{children}</PageLayout>
+        <WalletProvider>
+          <ScrollToTopFix />
+          <PageLayout showTabs={showTabs}>{children}</PageLayout>
+        </WalletProvider>
       </body>
     </html>
   );

@@ -13,6 +13,7 @@ export {default as GenerateButton} from "./GenerateButton/GenerateButton"
 export {default as OutputVideoBox} from "./OutputVideoBox/OutputVideoBox"
 export {default as CreateFun} from "./CreateFun/CreateFun"
 export {default as ScrollToTopFix} from "./ScrollToTopFix/ScrollToTopFix"
+export {default as PostButton} from "./PostButton/PostButton"
 
 
 

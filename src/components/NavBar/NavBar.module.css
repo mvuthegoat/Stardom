@@ -5,7 +5,6 @@
   z-index: 10;
   background-color: #fff;
   flex-shrink: 0; /* Prevent shrinking */
-
 }
 
 .navbar_container {
@@ -36,4 +35,27 @@
   background-color: black;
   color: white;
   border: 1px solid black;
+}
+
+.navbar_container_right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.accountButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  overflow: hidden; /* For a clean circular icon look */
+  margin-right: 3rem;
 }
