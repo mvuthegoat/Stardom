@@ -19,6 +19,7 @@ const HaveFunPage: React.FC = () => {
       const fetchedVideos = await fetchDiscoveryFeed(currentPage, limit);
       return fetchedVideos;
     } catch (err) {
+      console.error("Error loading videos:", err); // Log the error
       throw new Error("Failed to load videos.");
     }
   };

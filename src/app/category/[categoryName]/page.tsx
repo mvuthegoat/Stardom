@@ -1,9 +1,7 @@
-import { PageLayout, VideoGrid } from "../../../components";
-
 interface CategoryPageProps {
-  params: {
+  params: Promise<{
     categoryName: string;
-  };
+  }>;
 }
 
 const AssetMemePage = async ({ params }: CategoryPageProps) => {

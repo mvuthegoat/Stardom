@@ -5,7 +5,7 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
 
-export async function GET(request: Request, { params }: { params: { memeName: string } }) {
+export async function GET(request: Request, { params }: { params: Promise<{ memeName: string }>}) {
   const { memeName } = await params; // Get `memeName` from dynamic route
   const { searchParams } = new URL(request.url);
   const page = parseInt(searchParams.get("page") || "1", 10);

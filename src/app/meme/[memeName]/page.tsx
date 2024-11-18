@@ -10,14 +10,14 @@ import { TrendingUp, DollarSign, Droplet, PieChart } from 'lucide-react';
 interface MemeInfo {
   meme_origin: string;
   image: string;
-  crypto_address: string;
+  crypto_address?: string;
   dex_chart?: string;
 }
 
 interface OriginalMemePageProps {
-  params: {
+  params: Promise<{
     memeName: string;
-  };
+  }>;
 }
 
 export default async function OriginalMemePage({ params }: OriginalMemePageProps) {
@@ -27,7 +27,7 @@ export default async function OriginalMemePage({ params }: OriginalMemePageProps
   const memeInfo: MemeInfo | null = fetchedVideos.length > 0
     ? {
         meme_origin: fetchedVideos[0].meme_origin,
-        image: fetchedVideos[0].thumbnail_url,
+        image: fetchedVideos[0].original_image_key,
         crypto_address: fetchedVideos[0].crypto_address,
         dex_chart: fetchedVideos[0].dex_chart,
       }

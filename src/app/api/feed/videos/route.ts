@@ -3,6 +3,9 @@ import { Pool } from "pg";
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false, // Accept self-signed certificates
+  },
 });
 
 export async function GET(request: Request) {
@@ -13,12 +16,15 @@ export async function GET(request: Request) {
 
   try {
     const result = await pool.query(
-      "SELECT * FROM videos ORDER BY created_at DESC LIMIT $1 OFFSET $2",
+      "SELECT * FROM stardom_videos ORDER BY created_at DESC LIMIT $1 OFFSET $2",
       [limit, offset]
     );
     return NextResponse.json(result.rows);
   } catch (error) {
     console.error("Error fetching videos:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
