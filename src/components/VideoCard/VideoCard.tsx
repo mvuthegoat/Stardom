@@ -5,23 +5,57 @@ import styles from "./VideoCard.module.css";
 import VideoPopup from "../VideoPopup/VideoPopup";
 import { Video } from "@/types/videoTypes";
 
-export type VideoCardProps = Omit<Video, 'thumbnail_url'>;
+export type VideoCardProps = Omit<Video, "creator_id">;
 
 const VideoCard: React.FC<VideoCardProps> = ({
   id,
   title,
-  video_url,
+  video_key,
+  original_image_key,
   likes,
   crypto_address,
   meme_origin,
-  creator_name,
   dex_chart,
   description,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [originalImageUrl, setOriginalImageUrl] = useState<string | null>(null);
   const [showPopup, setShowPopup] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const delayRef = useRef<number | null>(null); // Ref to store timeout ID
+
+  useEffect(() => {
+    const fetchMediaUrls = async () => {
+      try {
+        // Fetch both video and image URLs in parallel
+        const [videoResponse, imageResponse] = await Promise.all([
+          fetch(
+            `/api/get-media-url-video-card?object_key=${video_key}&type=video`
+          ),
+          fetch(
+            `/api/get-media-url-video-card?object_key=${original_image_key}&type=image`
+          ),
+        ]);
+
+        const videoData = await videoResponse.json();
+        const imageData = await imageResponse.json();
+
+        setVideoUrl(videoData.video_url); // Update the video URL state
+        setOriginalImageUrl(imageData.image_url); // Update the image URL state
+      } catch (error) {
+        console.error("Error fetching media URLs:", error);
+      }
+    };
+
+    // Trigger fetch only if keys are present
+    if (video_key && original_image_key) {
+      fetchMediaUrls();
+    }
+
+    console.log(videoUrl);
+    console.log(originalImageUrl);
+  }, [video_key, original_image_key]);
 
   // Set the last frame as thumbnail when video loads
   const handleLoadedMetadata = () => {
@@ -81,26 +115,30 @@ const VideoCard: React.FC<VideoCardProps> = ({
         onClick={handleClick}
       >
         <div className={styles.videoWrapper}>
-          <video
-            ref={videoRef}
-            src={video_url}
-            className={styles.video}
-            muted
-            loop
-            preload="metadata"
-            onLoadedMetadata={handleLoadedMetadata}
-          />
+          {videoUrl ? (
+            <video
+              ref={videoRef}
+              src={videoUrl}
+              className={styles.video}
+              muted
+              loop
+              preload="metadata"
+              onLoadedMetadata={handleLoadedMetadata}
+            />
+          ) : (
+            <div>Loading...</div> // Placeholder for when videoUrl is not yet defined
+          )}
         </div>
       </div>
       {showPopup && (
         <VideoPopup
           id={id}
           title={title}
-          video_url={video_url}
+          video_url={videoUrl || ""}
+          original_image_url={originalImageUrl || ""}
           likes={likes}
           crypto_address={crypto_address}
           meme_origin={meme_origin}
-          creator_name={creator_name}
           dex_chart={dex_chart}
           description={description}
           onClose={handleClosePopup}

@@ -3,17 +3,20 @@ import styles from "./VideoPopup.module.css";
 import { FaTimes, FaHeart } from "react-icons/fa";
 import { VideoCardProps } from "../VideoCard/VideoCard";
 
-interface VideoPopupProps extends VideoCardProps {
+// Omit video_key from VideoCardProps while adding more props
+interface VideoPopupProps extends Omit<VideoCardProps, "video_key" | "original_image_key"> {
   onClose: () => void;
+  video_url: string;
+  original_image_url: string;
 }
 
 const VideoPopup: React.FC<VideoPopupProps> = ({
   title,
   video_url,
+  original_image_url,
   likes,
   crypto_address,
   meme_origin,
-  creator_name,
   dex_chart,
   description,
   onClose,
@@ -95,9 +98,9 @@ const VideoPopup: React.FC<VideoPopupProps> = ({
               <div className={styles.detailItem}>
                 <strong>Original Meme:</strong> {meme_origin}
               </div>
-              <div className={styles.detailItem}>
+              {/* <div className={styles.detailItem}>
                 <strong>Creator:</strong> {creator_name}
-              </div>
+              </div> */}
               <div className={styles.detailItem}>
                 <strong>Trade on:</strong> {dex_chart}
               </div>
