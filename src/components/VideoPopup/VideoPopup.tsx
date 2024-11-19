@@ -220,24 +220,33 @@ const VideoPopup: React.FC<VideoPopupProps> = ({
                     <ExternalLink className="w-4 h-4 text-gray-600" />
                   </button>
                 </div>
-
                 <div className="flex items-center">
                   <span className="text-gray-500 w-32">Crypto Address:</span>
-                  <button
-                    onClick={handleCopyAddress}
-                    className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-lg text-sm"
-                  >
-                    <span className="font-mono">
-                      {shortenAddress(crypto_address || "")}
-                    </span>
-                    {copied ? (
-                      <Check className="w-4 h-4 text-green-500" />
-                    ) : (
-                      <Copy className="w-4 h-4 text-gray-500" />
-                    )}
-                  </button>
-                </div>
-
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={handleCopyAddress}
+                      className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-lg text-sm"
+                    >
+                      <span className="font-mono">
+                        {shortenAddress(crypto_address || "")}
+                      </span>
+                      {copied ? (
+                        <Check className="w-4 h-4 text-green-500" />
+                      ) : (
+                        <Copy className="w-4 h-4 text-gray-500" />
+                      )}
+                    </button>
+                    <button
+                      onClick={() => router.push(`/meme/${crypto_address}`)}
+                      className="px-3 py-1.5 bg-green-100 hover:bg-green-200 text-green-700 rounded-lg text-s font-medium transition-all duration-200 flex items-center gap-1"
+                    >
+                      Trade this
+                      <span className="text-green-600 opacity-75">
+                        (coming soon!)
+                      </span>
+                    </button>
+                  </div>
+                </div>{" "}
                 <div className="flex items-center">
                   <span className="text-gray-500 w-32">Trade on:</span>
                   <a
