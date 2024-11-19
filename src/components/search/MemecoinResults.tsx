@@ -36,7 +36,7 @@ export const MemecoinResults = ({ results }: MemecoinResultsProps) => {
   };
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 py-8">
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 py-4">
       {results.map((meme) => (
         <Card
           key={meme.meme_origin}
@@ -71,7 +71,7 @@ export const MemecoinResults = ({ results }: MemecoinResultsProps) => {
 
             {/* View button */}
             <Link
-              href={`/meme/${encodeURIComponent(meme.meme_origin)}`}
+              href={`/meme/${encodeURIComponent(meme.crypto_address)}`}
               className="flex-shrink-0 text-sm font-medium text-white bg-black px-4 rounded-full hover:bg-gray-900 transition-colors duration-200 h-[40px] flex items-center justify-center ml-2"
             >
               View

@@ -7,7 +7,7 @@ export function InspirationResults({ results }: { results: Video[] }) {
   }
 
   return (
-    <div className="py-8">
+    <div className="py-4">
       <VideoGrid videos={results} />
     </div>
   );
