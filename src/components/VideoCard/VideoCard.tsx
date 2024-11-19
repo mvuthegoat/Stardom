@@ -146,7 +146,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
       )}
       <div className={styles.footer}>
         <h3 className={styles.videoTitle}>{title}</h3>
-        <span className={styles.likes}>▶ {likes}</span>
+        {/* <span className={styles.likes}>▶ {likes}</span> */}
       </div>
     </>
   );

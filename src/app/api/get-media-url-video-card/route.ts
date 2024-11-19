@@ -20,10 +20,10 @@ export async function GET(req: Request) {
   for (const type of typeList) {
     if (type === "video") {
       results.video_url = `${CLOUDFRONT_URL}/${object_key}`;
-      console.log("Generated video URL:", results.video_url); // Debug the generated video URL
+      // console.log("Generated video URL:", results.video_url); // Debug the generated video URL
     } else if (type === "image") {
       results.image_url = `${CLOUDFRONT_URL}/${object_key}`;
-      console.log("Generated image URL:", results.image_url); // Debug the generated image URL
+      // console.log("Generated image URL:", results.image_url); // Debug the generated image URL
     }
   }
 

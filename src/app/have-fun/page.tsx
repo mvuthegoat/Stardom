@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { VideoGrid } from "@/components";
 import { Video } from "@/types/videoTypes";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { fetchDiscoveryFeed } from "../api/videoData";
+import { fetchDiscoveryFeed } from "../../services/videoData";
 
 const HaveFunPage: React.FC = () => {
   const [videos, setVideos] = useState<Video[]>([]);

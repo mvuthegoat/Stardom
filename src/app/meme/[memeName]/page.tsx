@@ -2,10 +2,11 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
 import { VideoGrid } from '@/components';
-import { fetchMemeNameVideos } from '@/app/api/videoData';
+import { fetchMemeNameVideos } from '@/services/videoData';
 import styles from './OriginalMemePage.module.css';
 import { Video } from '@/types/videoTypes';
 import { TrendingUp, DollarSign, Droplet, PieChart } from 'lucide-react';
+import Image from 'next/image';
 
 interface MemeInfo {
   meme_origin: string;
@@ -27,7 +28,7 @@ export default async function OriginalMemePage({ params }: OriginalMemePageProps
   const memeInfo: MemeInfo | null = fetchedVideos.length > 0
     ? {
         meme_origin: fetchedVideos[0].meme_origin,
-        image: fetchedVideos[0].original_image_key,
+        image: `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/${fetchedVideos[0].original_image_key}`,
         crypto_address: fetchedVideos[0].crypto_address,
         dex_chart: fetchedVideos[0].dex_chart,
       }
@@ -44,10 +45,12 @@ export default async function OriginalMemePage({ params }: OriginalMemePageProps
       <aside className={styles.sidebar}>
         <div className={styles.memeCard}>
           <div className={styles.imageWrapper}>
-            <img 
+            <Image 
               src={memeInfo.image} 
               alt={`${memeName} meme`} 
               className={styles.memeImage}
+              width={100}
+              height={45}
             />
           </div>
           
@@ -89,10 +92,10 @@ export default async function OriginalMemePage({ params }: OriginalMemePageProps
 
           <div className={styles.actionButtons}>
             <button className={styles.buyButton}>
-              Buy {memeName}
+              Buy 
             </button>
             <button className={styles.sellButton}>
-              Sell {memeName}
+              Sell
             </button>
           </div>
         </div>

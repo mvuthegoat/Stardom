@@ -19,6 +19,8 @@ export async function GET(request: Request) {
       "SELECT * FROM stardom_videos ORDER BY created_at DESC LIMIT $1 OFFSET $2",
       [limit, offset]
     );
+    // console.log("Query Results for Feed:", result.rows);
+
     return NextResponse.json(result.rows);
   } catch (error) {
     console.error("Error fetching videos:", error);

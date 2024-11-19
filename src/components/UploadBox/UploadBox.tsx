@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import styles from "./UploadBox.module.css";
+import Image from "next/image";
 
 interface UploadBoxProps {
   onFileSelect: (file: File | null) => void; // Callback for selected file
@@ -44,7 +45,7 @@ const UploadBox: React.FC<UploadBoxProps> = ({ onFileSelect }) => {
     <div className={styles.uploadBox}>
       {preview ? (
         <div className={styles.previewContainer}>
-          <img src={preview} alt="Preview" className={styles.previewImage} />
+          <Image src={preview} alt="Preview" className={styles.previewImage} width={100} height={100}/>
           <button className={styles.deleteButton} onClick={handleDelete}>
             🗑️
           </button>
