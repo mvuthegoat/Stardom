@@ -1,20 +1,21 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import styles from "./NavBar.module.css";
-import { NavBarButtonList } from "./NavBarButtonConfig";
-import Button from "../Button/Button";
 import Image from "next/image";
 import Link from "next/link";
+import { NavBarButtonList } from "./NavBarButtonConfig";
+import Button from "../Button/Button";
+import SearchBar from "./SearchBar";
 
 const Navbar = () => {
   const pathname = usePathname();
 
   return (
-    <nav className={styles.navbar}>
-      <div className={styles.navbar_container}>
-        <div className={styles.navbar_container_left}>
-          <Link href="/" className={styles.logo}>
+    <nav className="w-full py-6 bg-white flex-shrink-0 relative z-10">
+      <div className="w-full px-4 flex items-center gap-6">
+        {/* Left section with logo and buttons */}
+        <div className="flex items-center gap-6 flex-shrink-0">
+          <Link href="/">
             <Image
               src="/favicon.ico"
               alt="Logo"
@@ -31,6 +32,10 @@ const Navbar = () => {
               active={pathname.startsWith(`${button.path}`)}
             />
           ))}
+        </div>
+        {/* Extended SearchBar */}
+        <div className="relative w-[65vw]">
+          <SearchBar />
         </div>
       </div>
     </nav>

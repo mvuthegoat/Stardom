@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./HaveFunExploreMemecoinsPage.module.css";
-import { PageLayout, Slideshow } from "../../../components";
+import { Slideshow } from "../../../components";
 
 const trendingAssets = [
   {

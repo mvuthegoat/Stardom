@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { VideoGrid } from "@/components";
 import { Video } from "@/types/videoTypes";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { fetchDiscoveryFeed } from "../api/videoData";
+import { fetchDiscoveryFeed } from "../../services/videoData";
 
 const HaveFunPage: React.FC = () => {
   const [videos, setVideos] = useState<Video[]>([]);
@@ -19,6 +19,7 @@ const HaveFunPage: React.FC = () => {
       const fetchedVideos = await fetchDiscoveryFeed(currentPage, limit);
       return fetchedVideos;
     } catch (err) {
+      console.error("Error loading videos:", err); // Log the error
       throw new Error("Failed to load videos.");
     }
   };

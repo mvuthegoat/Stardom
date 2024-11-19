@@ -1,5 +1,3 @@
-// components/VideoGrid.tsx
-
 "use client";
 
 import React from "react";
@@ -13,7 +11,8 @@ interface VideoGridProps {
   title?: string;
 }
 
-const VideoGrid: React.FC<VideoGridProps> = ({ videos, title }) => {
+const VideoGrid: React.FC<VideoGridProps> = ({ videos = [], title }) => {
+  // console.log("VIDEO GRID", videos);
   return (
     <div className={styles.gridContainer}>
       {title && <h2 className={styles.gridTitle}>{title}</h2>}

@@ -1,9 +1,7 @@
-import { PageLayout, VideoGrid } from "../../../components";
-
 interface AssetCollectionPageProps {
-  params: {
+  params: Promise<{
     collectionName: string;
-  };
+  }>;
 }
 
 const AssetCollectionPage = async ({ params }: AssetCollectionPageProps) => {

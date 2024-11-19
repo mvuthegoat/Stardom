@@ -1,34 +1,32 @@
-// src/app/meme/[memeName]/page.tsx
 import React from 'react';
 import { notFound } from 'next/navigation';
 import { VideoGrid } from '@/components';
-import { fetchMemeNameVideos } from '@/app/api/videoData';
+import { fetchCryptoAddressVideos } from '@/services/videoData';
 import styles from './OriginalMemePage.module.css';
 import { Video } from '@/types/videoTypes';
 import { TrendingUp, DollarSign, Droplet, PieChart } from 'lucide-react';
+import Image from 'next/image';
 
 interface MemeInfo {
   meme_origin: string;
   image: string;
-  crypto_address: string;
   dex_chart?: string;
 }
 
 interface OriginalMemePageProps {
-  params: {
-    memeName: string;
-  };
+  params: Promise<{
+    cryptoAddress: string;
+  }>;
 }
 
 export default async function OriginalMemePage({ params }: OriginalMemePageProps) {
-  const { memeName } = await params;   
-  const fetchedVideos: Video[] = await fetchMemeNameVideos(memeName);
+  const { cryptoAddress } = await params;   
+  const fetchedVideos: Video[] = await fetchCryptoAddressVideos(cryptoAddress);
 
   const memeInfo: MemeInfo | null = fetchedVideos.length > 0
     ? {
         meme_origin: fetchedVideos[0].meme_origin,
-        image: fetchedVideos[0].thumbnail_url,
-        crypto_address: fetchedVideos[0].crypto_address,
+        image: `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/${fetchedVideos[0].original_image_key}`,
         dex_chart: fetchedVideos[0].dex_chart,
       }
     : null;
@@ -44,10 +42,12 @@ export default async function OriginalMemePage({ params }: OriginalMemePageProps
       <aside className={styles.sidebar}>
         <div className={styles.memeCard}>
           <div className={styles.imageWrapper}>
-            <img 
+            <Image 
               src={memeInfo.image} 
-              alt={`${memeName} meme`} 
+              alt={`${memeInfo.meme_origin} meme`} 
               className={styles.memeImage}
+              width={100}
+              height={45}
             />
           </div>
           
@@ -89,10 +89,10 @@ export default async function OriginalMemePage({ params }: OriginalMemePageProps
 
           <div className={styles.actionButtons}>
             <button className={styles.buyButton}>
-              Buy {memeName}
+              Buy 
             </button>
             <button className={styles.sellButton}>
-              Sell {memeName}
+              Sell
             </button>
           </div>
         </div>
