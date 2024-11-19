@@ -135,6 +135,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
           id={id}
           title={title}
           video_url={videoUrl || ""}
+          video_key={video_key}
           original_image_url={originalImageUrl || ""}
           likes={likes}
           crypto_address={crypto_address}
