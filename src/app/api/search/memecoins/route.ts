@@ -48,32 +48,45 @@ export async function GET(req: Request) {
     //     LIMIT $2 OFFSET $3`,
     //   [`%${query}%`, limit, offset]
     // );
-
-    // query to include the first original_image_key for each meme_origin
+    // BIG QUERY FOR: all meme_origin names are unified into the earliest meme_origin name for a given crypto_address 
+    // Plus include any original_image_key for each meme_origin
     // This is just a short-term solution to display the profile pic of every memecoin
     const result = await pool.query(
-      `WITH grouped_videos AS (
-          SELECT DISTINCT ON (meme_origin) 
-                 meme_origin, 
-                 original_image_key, 
-                 COUNT(*) OVER (PARTITION BY meme_origin) AS total_videos, 
-                 SUM(likes) OVER (PARTITION BY meme_origin) AS total_likes, 
-                 MAX(created_at) OVER (PARTITION BY meme_origin) AS latest_video_date
-          FROM stardom_videos
-          WHERE meme_origin ILIKE $1
-          ORDER BY meme_origin, total_likes DESC
-        )
-        SELECT meme_origin, 
-               total_videos, 
-               total_likes, 
-               latest_video_date, 
-               original_image_key
-        FROM grouped_videos
-        ORDER BY total_likes DESC
-        LIMIT $2 OFFSET $3;`,
+      `
+          WITH unified_meme_origin AS (
+            SELECT DISTINCT ON (crypto_address)
+              crypto_address,
+              meme_origin
+            FROM
+              stardom_videos
+            ORDER BY
+              crypto_address,
+              created_at ASC
+          )
+          SELECT 
+              u.meme_origin, 
+              sv.crypto_address, 
+              COUNT(*) AS total_videos, 
+              SUM(sv.likes) AS total_likes, 
+              MAX(sv.created_at) AS latest_video_date, 
+              MAX(sv.original_image_key) AS original_image_key
+          FROM 
+              stardom_videos sv
+          JOIN 
+              unified_meme_origin u
+            ON 
+              sv.crypto_address = u.crypto_address
+          WHERE 
+              u.meme_origin ILIKE $1
+          GROUP BY 
+              u.meme_origin, sv.crypto_address
+          ORDER BY 
+              u.meme_origin, total_likes DESC
+          LIMIT $2 OFFSET $3;
+        `,
       [`%${query}%`, limit, offset]
     );
-
+    console.log("RESULTS:", result);
     // Return paginated response
     return NextResponse.json({
       message: "Success",
