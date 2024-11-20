@@ -108,26 +108,32 @@ const VideoCard: React.FC<VideoCardProps> = ({
 
   return (
     <>
-      <div
-        className={styles.videoCard}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        onClick={handleClick}
-      >
-        <div className={styles.videoWrapper}>
-          {videoUrl ? (
-            <video
-              ref={videoRef}
-              src={videoUrl}
-              className={styles.video}
-              muted
-              loop
-              preload="metadata"
-              onLoadedMetadata={handleLoadedMetadata}
-            />
-          ) : (
-            <div>Loading...</div> // Placeholder for when videoUrl is not yet defined
-          )}
+      <div className={styles.videoCardContainer}>
+        <div
+          className={styles.videoCard}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          onClick={handleClick}
+        >
+          <div className={styles.videoWrapper}>
+            {videoUrl ? (
+              <video
+                ref={videoRef}
+                src={videoUrl}
+                className={styles.video}
+                muted
+                loop
+                preload="metadata"
+                onLoadedMetadata={handleLoadedMetadata}
+              />
+            ) : (
+              <div>Loading...</div>
+            )}
+          </div>
+        </div>
+        <div className={styles.footer}>
+          <h3 className={styles.videoTitle}>{title}</h3>
+          {/* <span className={styles.likes}>▶ {likes}</span> */}
         </div>
       </div>
       {showPopup && (
@@ -145,12 +151,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
           onClose={handleClosePopup}
         />
       )}
-      <div className={styles.footer}>
-        <h3 className={styles.videoTitle}>{title}</h3>
-        {/* <span className={styles.likes}>▶ {likes}</span> */}
-      </div>
     </>
   );
 };
-
 export default VideoCard;

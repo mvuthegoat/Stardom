@@ -16,6 +16,11 @@
   background-clip: padding-box;
 }
 
+/* Add this style to create vertical spacing between cards */
+.videoColumn > * {
+  margin-bottom: 3.5rem; /* Adds space between cards stacked vertically */
+}
+
 .loadingIndicator {
   text-align: center;
   padding: 1rem;
@@ -36,6 +41,11 @@
   .videoColumn {
     padding-left: 0.75rem;
   }
+
+  /* Adjust vertical spacing for medium screens */
+  .videoColumn > * {
+    margin-bottom: 2.5rem;
+  }
 }
 
 /* Adjust gutter sizes for small screens */
@@ -50,5 +60,10 @@
 
   .videoColumn {
     padding-left: 0.5rem;
+  }
+
+  /* Adjust vertical spacing for small screens */
+  .videoColumn > * {
+    margin-bottom: 1.5rem;
   }
 }

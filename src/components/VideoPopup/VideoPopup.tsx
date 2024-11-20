@@ -173,7 +173,7 @@ const VideoPopup: React.FC<VideoPopupProps> = ({
                     isLiked ? "fill-red-500 text-red-500" : "text-gray-700"
                   }`}
                 />
-                <span className="text-sm font-medium">{likes}</span>
+                <span className="text-sm font-medium">{likes ? likes : ""}</span>
               </button>
               <button
                 onClick={handleDownloadClick}
@@ -200,7 +200,7 @@ const VideoPopup: React.FC<VideoPopupProps> = ({
 
           {/* Content section - increased top spacing */}
           <div className="space-y-8 mt-4">
-            <h2 className="text-3xl font-bold" id="video-popup-title">
+            <h2 className="text-2xl font-bold" id="video-popup-title">
               {title}
             </h2>
 
@@ -248,7 +248,7 @@ const VideoPopup: React.FC<VideoPopupProps> = ({
                   </div>
                 </div>{" "}
                 <div className="flex items-center">
-                  <span className="text-gray-500 w-32">Trade on:</span>
+                  <span className="text-gray-500 w-32">See more:</span>
                   <a
                     href={dex_chart}
                     className="text-blue-600 hover:underline"

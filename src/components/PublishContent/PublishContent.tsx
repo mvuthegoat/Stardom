@@ -9,21 +9,13 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-// import { Textarea } from "@/components/ui/textarea";
-// import {
-//   Select,
-//   SelectContent,
-//   SelectItem,
-//   SelectTrigger,
-//   SelectValue,
-// } from "@/components/ui/select";
 import { AlertCircle, CheckCircle2 } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 
 interface PublishContentProps {
   videoObjectKey: string | null;
   imageObjectKey: string | null;
-  description: string;
+  description: string | null;
   isDisabled: boolean;
 }
 
@@ -32,6 +24,12 @@ interface FormData {
   meme_origin: string;
   crypto_address: string;
   dex_chart: string;
+}
+
+interface FormErrors {
+  title?: string;
+  meme_origin?: string;
+  crypto_address?: string;
 }
 
 const PublishContent: React.FC<PublishContentProps> = ({
@@ -45,6 +43,7 @@ const PublishContent: React.FC<PublishContentProps> = ({
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [formErrors, setFormErrors] = useState<FormErrors>({});
   const [formData, setFormData] = useState<FormData>({
     title: "",
     meme_origin: "",
@@ -69,9 +68,42 @@ const PublishContent: React.FC<PublishContentProps> = ({
       ...prev,
       [name]: value,
     }));
+    // Clear error for the field being edited
+    setFormErrors((prev) => ({
+      ...prev,
+      [name]: undefined,
+    }));
+  };
+
+  const validateForm = (): boolean => {
+    const errors: FormErrors = {};
+    let isValid = true;
+
+    if (!formData.title.trim()) {
+      errors.title = "Title is required";
+      isValid = false;
+    }
+
+    if (!formData.meme_origin.trim()) {
+      errors.meme_origin = "Meme origin is required";
+      isValid = false;
+    }
+
+    // if (!formData.crypto_address.trim()) {
+    //   errors.crypto_address = "Crypto address is required";
+    //   isValid = false;
+    // }
+
+    setFormErrors(errors);
+    return isValid;
   };
 
   const handleSubmit = async (): Promise<void> => {
+    if (!validateForm()) {
+      setError("Please fill in all required fields");
+      return;
+    }
+
     setIsLoading(true);
     setError("");
     try {
@@ -99,14 +131,11 @@ const PublishContent: React.FC<PublishContentProps> = ({
         throw new Error(errorData.error || "Failed to publish video");
       }
 
-      // Set success state and show success message
       setIsSuccess(true);
 
-      console.log("Video published successfully!");
-      // Wait for 2 seconds to show the success message, then redirect
       setTimeout(() => {
-        setIsOpen(false); // Close the dialog
-        router.push("/have-fun"); // Redirect to home page
+        setIsOpen(false);
+        router.push("/have-fun");
       }, 2000);
     } catch (error) {
       console.error("Error uploading video:", error);
@@ -160,49 +189,56 @@ const PublishContent: React.FC<PublishContentProps> = ({
               <div>
                 <Input
                   name="title"
-                  placeholder="Give your video a catchy title"
-                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Give your video a catchy title *"
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                    formErrors.title ? "border-red-500" : "border-gray-200"
+                  }`}
                   value={formData.title}
                   onChange={handleInputChange}
                 />
+                {formErrors.title && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {formErrors.title}
+                  </p>
+                )}
               </div>
 
-              {/* <div>
-            <Select
-              onValueChange={(value) => 
-                setFormData(prev => ({ ...prev, meme_origin: value }))
-              }
-            >
-              <SelectTrigger className="w-full border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                <SelectValue placeholder="Select meme origin" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="original">Original Content</SelectItem>
-                <SelectItem value="tiktok">TikTok</SelectItem>
-                <SelectItem value="youtube">YouTube</SelectItem>
-                <SelectItem value="twitter">Twitter</SelectItem>
-                <SelectItem value="other">Other</SelectItem>
-              </SelectContent>
-            </Select>
-          </div> */}
               <div>
                 <Input
                   name="meme_origin"
-                  placeholder="Meme origin (DOGE, PEPE, etc -- must have valid crypto address)"
-                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Meme origin (ticker: DOGE, etc) *"
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                    formErrors.meme_origin
+                      ? "border-red-500"
+                      : "border-gray-200"
+                  }`}
                   value={formData.meme_origin}
                   onChange={handleInputChange}
                 />
+                {formErrors.meme_origin && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {formErrors.meme_origin}
+                  </p>
+                )}
               </div>
 
               <div>
                 <Input
                   name="crypto_address"
-                  placeholder="Crypto wallet address (optional)"
-                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Crypto Address"
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                    formErrors.crypto_address
+                      ? "border-red-500"
+                      : "border-gray-200"
+                  }`}
                   value={formData.crypto_address}
                   onChange={handleInputChange}
                 />
+                {/* {formErrors.crypto_address && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {formErrors.crypto_address}
+                  </p>
+                )} */}
               </div>
 
               <div>
@@ -217,7 +253,7 @@ const PublishContent: React.FC<PublishContentProps> = ({
 
               <Button
                 onClick={handleSubmit}
-                disabled={isLoading || !formData.title || !formData.meme_origin}
+                disabled={isLoading}
                 className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-medium py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading ? "Publishing..." : "Publish Video"}
