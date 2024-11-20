@@ -13,7 +13,6 @@ import styles from "./CreateFun.module.css";
 import { uploadFileToTemporaryS3 } from "@/utils/s3Utils";
 import { extractVideoFileObject } from "../../utils/extractVideoFileObject";
 import PublishContent from "../PublishContent/PublishContent";
-import { useVideoGeneration } from "@/hooks/useVideoGeneration";
 
 const CreateFun = () => {
   const [imageUrl, setImageUrl] = useState<string | null>(null); // for img-to-video API call
@@ -21,11 +20,9 @@ const CreateFun = () => {
   const [videoObjectKey, setVideoObjectKey] = useState<string | null>(null);
   const [prompt, setPrompt] = useState<string | null>(null);
   const [duration, setDuration] = useState<number>(5);
-  // const [videoUrl, setVideoUrl] = useState<string>("");
-  // const [loading, setLoading] = useState<boolean>(false);
-  // const [error, setError] = useState<string>("");
-
-  const { videoUrl, generateVideo, loading, error } = useVideoGeneration();
+  const [videoUrl, setVideoUrl] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
   const handleFileUpload = async (file: File | null) => {
     if (!file) {
@@ -67,11 +64,29 @@ const CreateFun = () => {
 
   const onGenerate = async () => {
     if (!imageUrl) {
-      console.error("Please upload an image before generating.");
+      setError("Please upload an image before generating.");
       return;
     }
 
-    await generateVideo(imageUrl, prompt);
+    setLoading(true);
+    setError("");
+    // try {
+    //   const response = await axios.post('/api/generate-video', {
+    //     imageUrl,
+    //     prompt,
+    //     duration,
+    //   });
+    //   setVideoUrl(response.data.videoUrl);
+    // } catch (err) {
+    //   setError('Failed to generate video. Please try again.');
+    //   console.error(err);
+    // } finally {
+    //   setLoading(false);
+    // }
+    setVideoUrl(
+      "https://cdn.klingai.com/bs2/upload-kling-api/8561539306/image2video/Cl56kGc9V34AAAAAAAOcow-0_raw_video_1.mp4"
+    );
+    setLoading(false);
   };
 
   return (
