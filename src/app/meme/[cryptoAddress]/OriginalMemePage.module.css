@@ -16,6 +16,7 @@
 }
 
 .memeCard {
+  position: relative;
   background: white;
   border-radius: 16px;
   padding: 24px;
@@ -33,7 +34,7 @@
 
 .memeImage {
   width: 100%;
-  height: 45vh;
+  height: 35vh;
   display: block;
   object-fit: contain;
 }
