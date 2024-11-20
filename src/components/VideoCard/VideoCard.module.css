@@ -1,25 +1,28 @@
+.videoCardContainer {
+  position: relative;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
 .videoCard {
   width: 100%;
-  background-color: #ffffff; /* White background for a clean look */
-  border-radius: 12px; /* Softer corners */
+  background-color: #ffffff;
+  border-radius: 12px;
   overflow: hidden;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .videoCard:hover {
   transform: scale(1.02);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .videoWrapper {
   width: 100%;
   position: relative;
-  background-color: #f0f0f0; /* Light gray for loading state */
+  background-color: #f0f0f0;
 }
 
 .video {
@@ -29,39 +32,39 @@
   object-fit: contain;
 }
 
-/* .info {
-  padding: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.title {
-  font-size: 1rem;
-  color: #333; 
-  margin: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 70%;
-} */
-
 .likes {
   font-size: 0.85rem;
-  color: #6b6a6a; /* Accent color for likes */
+  color: #6b6a6a;
 }
 
-
 .videoTitle {
-  font-family: 'Roboto', sans-serif;
-  font-size:0.95rem; /* Adjust as needed */
-  color: #343333; /* Dark gray for contrast */
-  text-align: left; /* Center align */
+  font-family: "Roboto", sans-serif;
+  font-size: 0.95rem;
+  color: #343333;
+  text-align: left;
+  margin: 0;
+  padding: 0;
+  /* Add these properties for text overflow handling */
+  max-width: 100%; /* Ensure title doesn't exceed container width */
+  white-space: nowrap; /* Prevent title from wrapping to next line */
+  overflow: hidden; /* Hide overflow text */
+  text-overflow: ellipsis; /* Add ... at the end of overflow */
+  /* Optional: for multi-line ellipsis (2 lines) */
+
 }
 
 .footer {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: -2rem;
   display: flex;
-  justify-content: space-between; /* Align title to left and likes to right */
+  justify-content: space-between;
   align-items: center;
-  margin-right: 0.65rem;
+  padding: 0.75rem 0.5rem 0;
+  pointer-events: none;
+  /* Add these properties to contain the footer */
+  max-width: 100%; /* Contain the footer width */
+  box-sizing: border-box; /* Include padding in width calculation */
 }
+

@@ -52,7 +52,7 @@ const UploadBox: React.FC<UploadBoxProps> = ({ onFileSelect }) => {
         </div>
       ) : (
         <label htmlFor="file-upload" className={styles.uploadLabel}>
-          Select Asset
+          Upload Your Meme Image
         </label>
       )}
       <input
