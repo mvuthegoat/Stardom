@@ -1,5 +1,4 @@
-// components/search/SearchTabs.tsx
-import { cn } from "@/lib/utils";  // Make sure you have this utility from shadcn/ui
+import { cn } from "../../lib/utils"; 
 
 interface SearchTabsProps {
   activeTab: string;
