@@ -25,7 +25,7 @@ async function migrateS3Object(
   try {
     // Copy the object to the permanent bucket
     const copyCommand = new CopyObjectCommand({
-      CopySource: `${tempBucket}/${objectKey}`,
+      CopySource: `${tempBucket}/${encodeURIComponent(objectKey)}`,
       Bucket: permanentBucket,
       Key: objectKey,
     });
