@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { Input } from "../../components/ui/input";
 
 const SearchBar = () => {
   const router = useRouter();

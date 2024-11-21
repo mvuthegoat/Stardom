@@ -10,7 +10,7 @@ import {
   OutputVideoBox,
 } from "../../components";
 import styles from "./CreateFun.module.css";
-import { uploadFileToTemporaryS3 } from "@/utils/s3Utils";
+import { uploadFileToTemporaryS3 } from "../../utils/s3Utils";
 import { extractVideoFileObject } from "../../utils/extractVideoFileObject";
 import PublishContent from "../PublishContent/PublishContent";
 

@@ -10,10 +10,10 @@ import {
   OutputVideoBox,
 } from "../../components";
 import styles from "./CreateFun.module.css";
-import { uploadFileToTemporaryS3 } from "@/utils/s3Utils";
+import { uploadFileToTemporaryS3 } from "../../utils/s3Utils";
 import { extractVideoFileObject } from "../../utils/extractVideoFileObject";
 import PublishContent from "../PublishContent/PublishContent";
-import { useVideoGeneration } from "@/hooks/useVideoGeneration";
+import { useVideoGeneration } from "../../hooks/useVideoGeneration";
 
 const CreateFun = () => {
   const [imageUrl, setImageUrl] = useState<string | null>(null); // for img-to-video API call
