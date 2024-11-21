@@ -15,6 +15,7 @@ export async function POST(req: NextRequest) {
       promptImage,
       promptText,
       duration: 5,
+      ratio: "1280:768",
     });
 
     return NextResponse.json(task);
@@ -23,7 +24,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(
       { error: "Failed to create task", details: error.message },
-      { status: 500 }
+      { status: 400 }
     );
   }
 }

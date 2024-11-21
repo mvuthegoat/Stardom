@@ -15,7 +15,7 @@ import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 interface PublishContentProps {
   videoObjectKey: string | null;
   imageObjectKey: string | null;
-  description: string | null;
+  description: string | undefined;
   isDisabled: boolean;
 }
 
