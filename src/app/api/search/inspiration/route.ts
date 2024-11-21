@@ -40,8 +40,7 @@ export async function GET(req: Request) {
     const queryText = `
     SELECT * FROM stardom_videos 
     WHERE meme_origin ILIKE $1 OR
-    title ILIKE $1 OR
-    description ILIKE $1
+    title LIKE $1
     ORDER BY created_at DESC
     LIMIT $2 OFFSET $3
   `;
