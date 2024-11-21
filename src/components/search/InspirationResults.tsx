@@ -1,4 +1,4 @@
-import { Video } from "@/types/videoTypes";
+import { Video } from "../../types/videoTypes";
 import VideoGrid from "../VideoGrid/VideoGrid";
 
 export function InspirationResults({ results }: { results: Video[] }) {

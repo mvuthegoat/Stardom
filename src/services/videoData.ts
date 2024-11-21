@@ -1,4 +1,4 @@
-import { Video } from "@/types/videoTypes";
+import { Video } from "../types/videoTypes";
 
 // Fetch discovery feed videos
 export async function fetchDiscoveryFeed(

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { KLING_API_BASE_URL, getApiToken } from "@/utils/klingApi";
+import { KLING_API_BASE_URL, getApiToken } from "../../../../utils/klingApi";
 
 export async function POST(req: NextRequest) {
   try {

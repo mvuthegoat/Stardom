@@ -3,7 +3,7 @@
 import React from "react";
 import Masonry from "react-masonry-css";
 import VideoCard from "../VideoCard/VideoCard";
-import { Video } from "@/types/videoTypes";
+import { Video } from "../../types/videoTypes";
 import styles from "./VideoGrid.module.css";
 
 interface VideoGridProps {

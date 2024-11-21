@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { VideoGrid } from "../../components";
-import { Video } from "@/types/videoTypes";
+import { Video } from "../../types/videoTypes";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { fetchDiscoveryFeed } from "../../services/videoData";
 

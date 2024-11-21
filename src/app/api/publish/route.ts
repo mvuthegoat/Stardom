@@ -5,7 +5,7 @@ import {
   CopyObjectCommand,
   DeleteObjectCommand,
 } from "@aws-sdk/client-s3";
-import { Video } from "@/types/videoTypes";
+import { Video } from "../../../types/videoTypes";
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,

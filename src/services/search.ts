@@ -1,5 +1,5 @@
-import { Video } from "@/types/videoTypes";
-import { MemeStats } from "@/types/memeTypes";
+import { Video } from "../types/videoTypes";
+import { MemeStats } from "../types/memeTypes";
 
 export async function searchInspiration(
   query: string,

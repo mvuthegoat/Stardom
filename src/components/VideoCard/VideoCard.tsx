@@ -3,7 +3,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import styles from "./VideoCard.module.css";
 import VideoPopup from "../VideoPopup/VideoPopup";
-import { Video } from "@/types/videoTypes";
+import { Video } from "../../types/videoTypes";
 
 export type VideoCardProps = Omit<Video, "creator_id">;
 

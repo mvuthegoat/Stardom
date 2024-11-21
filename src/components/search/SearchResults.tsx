@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation"; // Adjust based on your Next.js version
-import { SearchTabs } from "@/components";
+import { SearchTabs } from "../../components";
 import { InspirationResults } from "./InspirationResults";
 import { MemecoinResults } from "./MemecoinResults";
-import { searchInspiration, searchMemecoins } from "@/services/search";
-import { Video } from "@/types/videoTypes";
-import { MemeStats } from "@/types/memeTypes";
+import { searchInspiration, searchMemecoins } from "../../services/search";
+import { Video } from "../../types/videoTypes";
+import { MemeStats } from "../../types/memeTypes";
 
 interface SearchResultsProps {
   query: string;

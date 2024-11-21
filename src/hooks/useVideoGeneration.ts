@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { createTask, queryTask } from "@/services/videogen/apiServices"; // Assume your API services are implemented
+import { createTask, queryTask } from "../services/videogen/apiServices"; // Assume your API services are implemented
 
 export const useVideoGeneration = () => {
   const [videoUrl, setVideoUrl] = useState<string | null>(null);

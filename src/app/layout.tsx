@@ -1,7 +1,7 @@
 "use client"; 
 
 import React from "react";
-import { PageLayout, ScrollToTopFix } from "@/components";
+import { PageLayout, ScrollToTopFix } from "../components";
 import "./globals.css"; 
 
 const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {

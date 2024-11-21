@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { KLING_API_BASE_URL, getApiToken } from '@/utils/klingApi'; // Assuming shared utilities
+import { KLING_API_BASE_URL, getApiToken } from '../../../../utils/klingApi'; // Assuming shared utilities
 
 export async function GET(req: NextRequest) {
   try {

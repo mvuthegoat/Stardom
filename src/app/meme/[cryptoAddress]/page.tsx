@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import { getTopPool } from "@/services/cryptoData/getTopPool";
-import { MemecoinTrading } from "@/components";
+import { getTopPool } from "../../../services/cryptoData/getTopPool";
+import { MemecoinTrading } from "../../../components";
 
 interface MemecoinTradingPageProps {
   params: Promise<{
