@@ -19,7 +19,7 @@ const CreateFun = () => {
   const [imageUrl, setImageUrl] = useState<string | null>(null); // for img-to-video API call
   const [imageObjectKey, setImageObjectKey] = useState<string | null>(null); // to store in db, later use this to get the signed URL to retrieve the image
   const [videoObjectKey, setVideoObjectKey] = useState<string | null>(null);
-  const [prompt, setPrompt] = useState<string | null>(null);
+  const [prompt, setPrompt] = useState<string | undefined>(undefined);
   const [duration, setDuration] = useState<number>(5);
   // const [videoUrl, setVideoUrl] = useState<string>("");
   // const [loading, setLoading] = useState<boolean>(false);
