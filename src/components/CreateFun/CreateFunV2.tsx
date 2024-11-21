@@ -14,7 +14,7 @@ import { uploadFileToTemporaryS3 } from "@/utils/s3Utils";
 import { extractVideoFileObject } from "../../utils/extractVideoFileObject";
 import PublishContent from "../PublishContent/PublishContent";
 
-const CreateFunV1 = () => {
+const CreateFunV2 = () => {
   const [imageUrl, setImageUrl] = useState<string | null>(null); // for img-to-video API call
   const [imageObjectKey, setImageObjectKey] = useState<string | null>(null); // to store in db, later use this to get the signed URL to retrieve the image
   const [videoObjectKey, setVideoObjectKey] = useState<string | null>(null);
@@ -41,6 +41,11 @@ const CreateFunV1 = () => {
       console.error("Error uploading image:", error);
       // Handle upload error (e.g., show an error message)
     }
+  };
+
+  const handleVideoDelete = () => {
+    setVideoUrl("");
+    setVideoObjectKey(null);
   };
 
   useEffect(() => {
@@ -70,8 +75,77 @@ const CreateFunV1 = () => {
 
     setLoading(true);
     setError("");
-    setVideoUrl("memevids/58e95b11-76c8-4386-8981-c2bc38bfa7ac_generated_video.mp4");
-    setLoading(false);
+
+    try {
+      // Call the server-side API route
+      const response = await fetch("/api/runwayml/image-to-video", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "gen3a_turbo", // Replace with your desired model
+          promptImage: imageUrl,
+          promptText: prompt || undefined,
+        }),
+      });
+
+      if (!response.ok) {
+        setLoading(false);
+        const errorData = await response.json();
+        const errorMessage =
+          errorData?.details || "An unexpected error from AI models occurred.";
+        setError(errorMessage);
+   
+      }
+
+      const task = await response.json();
+      console.log("Task Created:", task);
+
+      // Start polling for task status
+      pollTaskStatus(task.id);
+    } catch (err: any) {
+      console.error("Error generating video:", err);
+      setError(err.message || "An unexpected error occurred.");
+    } finally {
+      //   setLoading(false);
+    }
+  };
+
+  const pollTaskStatus = async (taskId: string) => {
+    const interval = setInterval(async () => {
+      try {
+        const response = await fetch("/api/runwayml/task", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ taskId }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch task status");
+        }
+
+        const task = await response.json();
+        // console.log("Task Status:", task);
+
+        if (task.status === "SUCCEEDED") {
+          clearInterval(interval);
+          setVideoUrl(task.output[0]); // Use the first output URL
+          setLoading(false);
+        } else if (task.status === "FAILED") {
+          clearInterval(interval);
+          setError(`Task failed: ${task.failure || "Unknown reason."}`);
+          setLoading(false);
+        }
+      } catch (err) {
+        clearInterval(interval);
+        console.error("Error polling task status:", err);
+        setError("An error occurred while polling task status.");
+        setLoading(false);
+      }
+    }, 5000); // Poll every 5 seconds
   };
 
   return (
@@ -105,7 +179,7 @@ const CreateFunV1 = () => {
         {error && <div style={{ color: "red" }}>{error}</div>}
       </div>
       <div className={styles.outputSection}>
-        <OutputVideoBox videoUrl={videoUrl} />
+        <OutputVideoBox videoUrl={videoUrl} onDelete={handleVideoDelete} />
         <PublishContent
           imageObjectKey={imageObjectKey}
           videoObjectKey={videoObjectKey}
@@ -117,4 +191,4 @@ const CreateFunV1 = () => {
   );
 };
 
-export default CreateFunV1;
+export default CreateFunV2;

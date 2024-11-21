@@ -19,8 +19,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unsupported file type' }, { status: 400 });
     }
 
+    const newFileName = fileType == 'image' ? "uploaded_image" : "generated_video";
     const bucketName = process.env.TEMP_BUCKET_NAME!;
-    const objectKey = `${folder}${Date.now()}_${uuidv4()}_${fileName}`;
+    const objectKey = `${folder}${Date.now()}_${uuidv4()}_${newFileName}`;
 
     const command = new PutObjectCommand({
       Bucket: bucketName,

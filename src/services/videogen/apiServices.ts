@@ -1,4 +1,4 @@
-export const createTask = async (imageUrl: string, prompt: string | null) => {
+export const createTask = async (imageUrl: string, prompt: string | undefined) => {
     try {
         const response = await fetch("/api/videogen/create-task", {
             method: "POST",
@@ -7,7 +7,7 @@ export const createTask = async (imageUrl: string, prompt: string | null) => {
             },
             body: JSON.stringify({
                 image: imageUrl,
-                prompt, // Optional prompt from user input
+                prompt: prompt ?? null, // Optional prompt from user input
             })
         })
 

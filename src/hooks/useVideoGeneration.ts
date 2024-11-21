@@ -6,7 +6,7 @@ export const useVideoGeneration = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
-  const generateVideo = useCallback(async (imageUrl: string, prompt: string | null) => {
+  const generateVideo = useCallback(async (imageUrl: string, prompt: string | undefined) => {
     setLoading(true);
     setError("");
 

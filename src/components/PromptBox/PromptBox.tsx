@@ -2,8 +2,8 @@ import styles from "./PromptBox.module.css";
 import React from "react";
 
 interface PromptBoxProps {
-  prompt: string | null;
-  setPrompt: (prompt: string | null) => void;
+  prompt: string | undefined;
+  setPrompt: (prompt: string | undefined) => void;
 }
 
 const PromptBox: React.FC<PromptBoxProps> = ({ prompt, setPrompt }) => {
@@ -13,7 +13,7 @@ const PromptBox: React.FC<PromptBoxProps> = ({ prompt, setPrompt }) => {
         className={styles.textArea}
         value={prompt || ""}
         onChange={(e) =>
-          setPrompt(e.target.value.trim() === "" ? null : e.target.value)
+          setPrompt(e.target.value.trim() === "" ? undefined : e.target.value)
         } // Convert empty input back to null
         placeholder={`Turn your meme image into videos.....\nExample: "Camera shows a green creature, FWOG, going to Mars with his friends"`}
       />

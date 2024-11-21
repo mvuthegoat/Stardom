@@ -56,3 +56,23 @@
   background: #757474; /* Blue background on hover */
   color: #ffffff;
 }
+
+.deleteButton {
+  position: absolute;
+  top: 12px;
+  left: 12px; /* Changed from right to left */
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  color: #000000;
+  font-size: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 8px;
+  text-decoration: none;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.deleteButton:hover {
+  background: #757474;
+  color: #ffffff;
+}

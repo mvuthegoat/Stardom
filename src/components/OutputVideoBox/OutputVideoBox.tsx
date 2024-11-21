@@ -2,12 +2,14 @@
 
 import React, { useEffect } from "react";
 import styles from "./OutputVideoBox.module.css";
+import { v4 as uuidv4 } from "uuid";
 
 interface OutputVideoBoxProps {
   videoUrl: string | null;
+  onDelete?: () => void;
 }
 
-const OutputVideoBox: React.FC<OutputVideoBoxProps> = ({ videoUrl }) => {
+const OutputVideoBox: React.FC<OutputVideoBoxProps> = ({ videoUrl, onDelete }) => {
   const handleDownload = async () => {
     if (!videoUrl) return;
 
@@ -21,8 +23,8 @@ const OutputVideoBox: React.FC<OutputVideoBoxProps> = ({ videoUrl }) => {
 
       // Create a Blob from the response
       const blob = await response.blob();
-      const fileName = videoUrl.split("/").pop() || "download.mp4";
-
+      // Generate a random UUID-based filename
+      const fileName = `${uuidv4()}_generated_video.mp4`;
       // Create a URL for the Blob
       const blobUrl = URL.createObjectURL(blob);
 
@@ -43,11 +45,20 @@ const OutputVideoBox: React.FC<OutputVideoBoxProps> = ({ videoUrl }) => {
     }
   };
 
+  const handleDelete = () => {
+    if (onDelete) {
+      onDelete();
+    }
+  };
+
   return (
     <div className={styles.outputVideoBox}>
       {videoUrl ? (
         <>
           <video controls src={videoUrl} className={styles.videoPlayer} />
+          <button onClick={handleDelete} className={styles.deleteButton}>
+            🗑️
+          </button>
           <button onClick={handleDownload} className={styles.downloadButton}>
             ⬇️
           </button>
