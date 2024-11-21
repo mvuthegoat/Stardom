@@ -14,11 +14,11 @@ import { uploadFileToTemporaryS3 } from "@/utils/s3Utils";
 import { extractVideoFileObject } from "../../utils/extractVideoFileObject";
 import PublishContent from "../PublishContent/PublishContent";
 
-const CreateFun = () => {
+const CreateFunV2 = () => {
   const [imageUrl, setImageUrl] = useState<string | null>(null); // for img-to-video API call
   const [imageObjectKey, setImageObjectKey] = useState<string | null>(null); // to store in db, later use this to get the signed URL to retrieve the image
   const [videoObjectKey, setVideoObjectKey] = useState<string | null>(null);
-  const [prompt, setPrompt] = useState<string>("");
+  const [prompt, setPrompt] = useState<string | undefined>(undefined);
   const [duration, setDuration] = useState<number>(5);
   const [videoUrl, setVideoUrl] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -41,6 +41,11 @@ const CreateFun = () => {
       console.error("Error uploading image:", error);
       // Handle upload error (e.g., show an error message)
     }
+  };
+
+  const handleVideoDelete = () => {
+    setVideoUrl("");
+    setVideoObjectKey(null);
   };
 
   useEffect(() => {
@@ -86,7 +91,12 @@ const CreateFun = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to create video task");
+        setLoading(false);
+        const errorData = await response.json();
+        const errorMessage =
+          errorData?.details || "An unexpected error from AI models occurred.";
+        setError(errorMessage);
+   
       }
 
       const task = await response.json();
@@ -98,7 +108,7 @@ const CreateFun = () => {
       console.error("Error generating video:", err);
       setError(err.message || "An unexpected error occurred.");
     } finally {
-      setLoading(false);
+      //   setLoading(false);
     }
   };
 
@@ -146,14 +156,30 @@ const CreateFun = () => {
         <ConfigButton duration={duration} setDuration={setDuration} />
         <GenerateButton onGenerate={onGenerate} />
         {loading && (
-          <div style={{ color: "black" }}>
+          <div className="flex items-center gap-2 text-black">
+            <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+                fill="none"
+              />
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              />
+            </svg>
             Generating your video... please wait!
           </div>
-        )}
+        )}{" "}
         {error && <div style={{ color: "red" }}>{error}</div>}
       </div>
       <div className={styles.outputSection}>
-        <OutputVideoBox videoUrl={videoUrl} />
+        <OutputVideoBox videoUrl={videoUrl} onDelete={handleVideoDelete} />
         <PublishContent
           imageObjectKey={imageObjectKey}
           videoObjectKey={videoObjectKey}
@@ -165,4 +191,4 @@ const CreateFun = () => {
   );
 };
 
-export default CreateFun;
+export default CreateFunV2;
