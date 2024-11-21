@@ -173,7 +173,9 @@ const VideoPopup: React.FC<VideoPopupProps> = ({
                     isLiked ? "fill-red-500 text-red-500" : "text-gray-700"
                   }`}
                 />
-                <span className="text-sm font-medium">{likes ? likes : ""}</span>
+                <span className="text-sm font-medium">
+                  {likes ? likes : ""}
+                </span>
               </button>
               <button
                 onClick={handleDownloadClick}
@@ -248,15 +250,19 @@ const VideoPopup: React.FC<VideoPopupProps> = ({
                   </div>
                 </div>{" "}
                 <div className="flex items-center">
-                  <span className="text-gray-500 w-32">See more:</span>
-                  <a
-                    href={dex_chart}
-                    className="text-blue-600 hover:underline"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    View Chart
-                  </a>
+                  <span className="text-gray-500 w-32">See on DEX:</span>
+                  {dex_chart ? (
+                    <a
+                      href={dex_chart}
+                      className="text-blue-600 hover:underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      View
+                    </a>
+                  ) : (
+                    <span className="text-blue-500">Empty</span>
+                  )}
                 </div>
               </div>
             </div>
