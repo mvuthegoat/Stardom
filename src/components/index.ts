@@ -15,6 +15,7 @@ export {default as CreateFun} from "./CreateFun/CreateFun"
 export {default as ScrollToTopFix} from "./ScrollToTopFix/ScrollToTopFix"
 export {default as SearchBar} from "./NavBar/SearchBar"
 export {default as SearchTabs} from "./search/SearchTabs"
+export {default as MemecoinTrading} from "./MemecoinTrading/MemecoinTrading"
 
 
 
