@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import styles from "./OutputVideoBox.module.css";
 import { v4 as uuidv4 } from "uuid";
 
@@ -9,7 +9,10 @@ interface OutputVideoBoxProps {
   onDelete?: () => void;
 }
 
-const OutputVideoBox: React.FC<OutputVideoBoxProps> = ({ videoUrl, onDelete }) => {
+const OutputVideoBox: React.FC<OutputVideoBoxProps> = ({
+  videoUrl,
+  onDelete,
+}) => {
   const handleDownload = async () => {
     if (!videoUrl) return;
 

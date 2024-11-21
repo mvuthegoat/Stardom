@@ -19,11 +19,18 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json(task);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("RunwayML API error:", error);
 
+    if (error instanceof Error) {
+      return NextResponse.json(
+        { error: "Failed to create task", details: error.message },
+        { status: 400 }
+      );
+    }
+
     return NextResponse.json(
-      { error: "Failed to create task", details: error.message },
+      { error: "Failed to create task", details: "An error occurred" },
       { status: 400 }
     );
   }

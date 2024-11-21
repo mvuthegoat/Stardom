@@ -96,7 +96,6 @@ const CreateFunV2 = () => {
         const errorMessage =
           errorData?.details || "An unexpected error from AI models occurred.";
         setError(errorMessage);
-   
       }
 
       const task = await response.json();
@@ -104,9 +103,11 @@ const CreateFunV2 = () => {
 
       // Start polling for task status
       pollTaskStatus(task.id);
-    } catch (err: any) {
+    } catch (err: Error | unknown) {
       console.error("Error generating video:", err);
-      setError(err.message || "An unexpected error occurred.");
+      setError(
+        err instanceof Error ? err.message : "An unexpected error occurred."
+      );
     } finally {
       //   setLoading(false);
     }

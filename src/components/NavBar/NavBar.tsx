@@ -17,11 +17,12 @@ const Navbar = () => {
         <div className="flex items-center gap-6 flex-shrink-0">
           <Link href="/">
             <Image
-              src="/favicon.ico"
+              src="/images/stardom-logo.png"
               alt="Logo"
-              width={30}
-              height={30}
+              width={45}
+              height={45}
               priority
+              style={{ borderRadius: '50%' }}
             />
           </Link>
           {NavBarButtonList.map((button) => (

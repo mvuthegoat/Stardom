@@ -19,12 +19,19 @@ export async function POST(req: NextRequest) {
     // Fetch the task status
     const task = await runwayClient.tasks.retrieve(taskId);
     return NextResponse.json(task);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error fetching task:", error);
 
+    if (error instanceof Error) {
+      return NextResponse.json(
+        { error: "Failed to fetch task status", details: error.message },
+        { status: 400 }
+      );
+    }
+
     return NextResponse.json(
-      { error: "Failed to fetch task status", details: error.message },
-      { status: 500 }
+      { error: "Failed to fetch task status", details: "An error occurred" },
+      { status: 400 }
     );
   }
 }

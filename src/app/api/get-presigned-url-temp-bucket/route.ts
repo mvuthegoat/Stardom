@@ -7,7 +7,7 @@ const s3Client = new S3Client({ region: process.env.AWS_REGION });
 
 export async function POST(request: NextRequest) {
   try {
-    const { fileName, fileType } = await request.json();
+    const { fileType } = await request.json();
 
     // Determine the folder based on the file type
     let folder = '';

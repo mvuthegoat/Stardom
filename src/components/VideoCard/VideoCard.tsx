@@ -52,9 +52,6 @@ const VideoCard: React.FC<VideoCardProps> = ({
     if (video_key && original_image_key) {
       fetchMediaUrls();
     }
-
-    console.log(videoUrl);
-    console.log(originalImageUrl);
   }, [video_key, original_image_key]);
 
   // Set the last frame as thumbnail when video loads

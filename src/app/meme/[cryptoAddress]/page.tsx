@@ -27,7 +27,7 @@ export default async function MemecoinTradingPage({
     )}`
   );
   const imageData = await imageResponse.json();
-  console.log(imageData);
+  // console.log(imageData);
   const imageUrl = `${process.env.NEXT_PUBLIC_CLOUDFRONT_URL}/${imageData.original_image_key}`;
 
   return <MemecoinTrading poolInfo={poolInfo} imageUrl={imageUrl} />;

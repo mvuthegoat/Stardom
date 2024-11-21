@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 
 const ACCESS_KEY = process.env.KLING_ACCESS_KEY || ""; // Add your access key in .env file
 const SECRET_KEY = process.env.KLING_SECRET_KEY || ""; // Add your secret key in .env file
 
-export async function POST(req: NextRequest) {
+export async function POST() {
   try {
     if (!ACCESS_KEY || !SECRET_KEY) {
       return NextResponse.json(
