@@ -1,11 +1,11 @@
 export const tabsConfig = [
   {
-    label: "Explore Creativity",
-    path: "/have-fun",
+    label: "5 Seconds Meme",
+    path: "/create-fun",
   },
   {
-    label: "Trade Creativity",
-    path: "/have-fun/explore-memecoins",
+    label: "Upload Your Meme",
+    path: "/create-fun/upload-your-meme",
   },
   // Add more tabs here as needed
 ];

@@ -10,18 +10,19 @@ import { Video } from "../../../types/videoTypes";
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
-    rejectUnauthorized: false, // Accept self-signed certificates
+    rejectUnauthorized: false,
   },
 });
 
 const s3Client = new S3Client({ region: process.env.AWS_REGION });
 
-// Helper function to migrate objects in S3
 async function migrateS3Object(
-  objectKey: string,
+  objectKey: string | null,
   tempBucket: string,
   permanentBucket: string
-) {
+): Promise<void> {
+  if (!objectKey) return;
+
   try {
     // Copy the object to the permanent bucket
     const copyCommand = new CopyObjectCommand({
@@ -49,30 +50,31 @@ async function migrateS3Object(
 
 export async function POST(request: Request) {
   try {
-    // Parse the incoming request body
     const body = await request.json();
     const {
       title,
       video_key,
-      likes = 0, // Default to 0 likes
+      likes = 0,
       crypto_address = "",
       original_image_key,
       meme_origin,
       creator_id,
-      dex_chart = "", // Default to null if not provided
-      description = "", // Default to null if not provided
+      dex_chart = "",
+      description = "",
     }: Partial<Video> = body;
 
     // Validate required fields
-    if (
-      !title ||
-      !video_key ||
-      !original_image_key ||
-      !meme_origin ||
-      !creator_id
-    ) {
+    if (!title || !meme_origin || !creator_id) {
       return NextResponse.json(
-        { error: "Missing required fields" },
+        { error: "Missing required fields: title, meme_origin, or creator_id" },
+        { status: 400 }
+      );
+    }
+
+    // Validate that at least one file key is provided
+    if (!video_key && !original_image_key) {
+      return NextResponse.json(
+        { error: "At least one file (video or image) must be provided" },
         { status: 400 }
       );
     }
@@ -80,12 +82,23 @@ export async function POST(request: Request) {
     const tempBucket = process.env.TEMP_BUCKET_NAME!;
     const permanentBucket = process.env.PERMANENT_BUCKET_NAME!;
 
-    await Promise.all([
-      migrateS3Object(video_key, tempBucket, permanentBucket), // Migrate video
-      migrateS3Object(original_image_key, tempBucket, permanentBucket), // Migrate image
-    ]);
+    // Migrate files that exist
+    const migrationPromises = [];
+    if (video_key) {
+      migrationPromises.push(
+        migrateS3Object(video_key, tempBucket, permanentBucket)
+      );
+    }
+    if (original_image_key) {
+      migrationPromises.push(
+        migrateS3Object(original_image_key, tempBucket, permanentBucket)
+      );
+    }
 
-    // Step 2: Insert video metadata into the database
+    // Wait for all migrations to complete
+    await Promise.all(migrationPromises);
+
+    // Insert into database
     const query = `
       INSERT INTO stardom_videos (
         title,
@@ -104,10 +117,10 @@ export async function POST(request: Request) {
 
     const values = [
       title,
-      video_key,
+      video_key || null, // Explicitly set null if undefined
       likes,
       crypto_address,
-      original_image_key,
+      original_image_key || null, // Explicitly set null if undefined
       meme_origin,
       creator_id,
       dex_chart,
@@ -117,12 +130,19 @@ export async function POST(request: Request) {
     const { rows } = await pool.query(query, values);
     const newVideo = rows[0];
 
-    console.log(`Video data successfully inserted to the database for ${video_key}.`);
+    console.log(
+      `Data successfully inserted to the database for content: ${title}`
+    );
 
-    // Respond with the newly created video entry
     return NextResponse.json(newVideo, { status: 201 });
   } catch (error) {
-    console.error("Error publishing video:", error);
+    console.error("Error publishing content:", error);
+
+    // More specific error handling
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }
