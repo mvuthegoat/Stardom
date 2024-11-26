@@ -7,6 +7,7 @@ import { VideoCardProps } from "../VideoCard/VideoCard";
 import { useRouter } from "next/navigation";
 import { ExternalLink } from "lucide-react";
 import Image from "next/image";
+import styles from "./VideoPopup.module.css"
 
 interface VideoPopupProps extends VideoCardProps {
   onClose: () => void;
@@ -163,7 +164,7 @@ const VideoPopup: React.FC<VideoPopupProps> = ({
 
   return (
     <div
-      className="fixed inset-0 bg-black/60 flex justify-center items-center z-50"
+      className={styles.overlay}
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -186,13 +187,13 @@ const VideoPopup: React.FC<VideoPopupProps> = ({
           {isStaticImage ? (
             <div className="relative w-full h-full">
               <Image
-                src={original_image_url || ''}
+                src={original_image_url || ""}
                 alt="Media content"
                 fill
                 sizes="60vw"
                 priority
                 className="rounded-3xl object-contain"
-                style={{ backgroundColor: 'black' }}
+                style={{ backgroundColor: "black" }}
               />
             </div>
           ) : (
