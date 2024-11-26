@@ -1,67 +1,64 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
+import { useDropzone } from "react-dropzone";
 import styles from "./UploadBox.module.css";
 import Image from "next/image";
 
 interface UploadBoxProps {
-  onFileSelect: (file: File | null) => void; // Callback for selected file
+  onFileSelect: (file: File | null) => void;
 }
 
 const UploadBox: React.FC<UploadBoxProps> = ({ onFileSelect }) => {
   const [preview, setPreview] = useState<string | null>(null);
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0];
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      if (acceptedFiles.length > 0) {
+        const file = acceptedFiles[0];
+        setPreview(URL.createObjectURL(file));
+        onFileSelect(file);
+      }
+    },
+    [onFileSelect]
+  );
 
-      // Generate a local preview
-      setPreview(URL.createObjectURL(file));
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      "image/*": [".jpeg", ".jpg", ".png", ".gif", ".webp"],
+    },
+    maxFiles: 1,
+    multiple: false,
+  });
 
-      // Upload the image to S3 and get the URL
-      // try {
-      //   const tempImageData = await uploadFileToS3(file);
-      //   const {mediaUrl, objectKey} = tempImageData;
-      //   setImageUrl(mediaUrl);  // This is the presigned URL
-      //   setImageObjectKey(objectKey);
-
-      // } catch (error) {
-      //   console.error("Error uploading image:", error);
-      //   // Handle error (e.g., show a message to the user)
-      // }
-
-      // Pass the selected file to the parent
-      onFileSelect(file);
-    }
-  };
-
-  const handleDelete = () => {
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent triggering dropzone click
     setPreview(null);
     onFileSelect(null);
-    // Optionally, delete the image from S3
   };
 
   return (
-    <div className={styles.uploadBox}>
+    <div {...getRootProps()} className={styles.uploadBox}>
       {preview ? (
         <div className={styles.previewContainer}>
-          <Image src={preview} alt="Preview" className={styles.previewImage} width={100} height={100}/>
+          <Image
+            src={preview}
+            alt="Preview"
+            className={styles.previewImage}
+            width={100}
+            height={100}
+          />
           <button className={styles.deleteButton} onClick={handleDelete}>
             🗑️
           </button>
         </div>
       ) : (
         <label htmlFor="file-upload" className={styles.uploadLabel}>
-          Upload Your Meme Image
+          {isDragActive ? "Drop your image here" : "Upload Your Meme Image"}
         </label>
       )}
-      <input
-        type="file"
-        id="file-upload"
-        accept="image/*"
-        onChange={handleFileChange}
-        className={styles.fileInput}
-      />
+      <input {...getInputProps()} className={styles.fileInput} />
     </div>
   );
 };
