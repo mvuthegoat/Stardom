@@ -6,29 +6,21 @@ import { Heart, Download, Copy, Check } from "lucide-react";
 import { VideoCardProps } from "../VideoCard/VideoCard";
 import { useRouter } from "next/navigation";
 import { ExternalLink } from "lucide-react";
+import Image from "next/image";
 
-interface VideoPopupProps extends Omit<VideoCardProps, "original_image_key"> {
+interface VideoPopupProps extends VideoCardProps {
   onClose: () => void;
-  video_url: string;
+  video_url?: string;
   original_image_url?: string;
 }
-
-// interface VideoPopupProps {
-//   title: string;
-//   video_url: string;
-//   likes: number;
-//   crypto_address: string;
-//   meme_origin: string;
-//   dex_chart: string;
-//   description: string;
-//   onClose: () => void;
-// }
 
 const VideoPopup: React.FC<VideoPopupProps> = ({
   // id,  // For future use to interact with the database to increment likes
   title,
   video_url,
+  original_image_url,
   video_key, // For download purpose
+  original_image_key,
   likes: initialLikes,
   crypto_address,
   meme_origin,
@@ -44,6 +36,7 @@ const VideoPopup: React.FC<VideoPopupProps> = ({
   const [copied, setCopied] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
+  const isStaticImage = !video_key;
 
   useEffect(() => {
     if (videoRef.current) {
@@ -69,12 +62,19 @@ const VideoPopup: React.FC<VideoPopupProps> = ({
 
   const handleDownload = async () => {
     try {
-      // Fetch the S3 signed URL from your API instead of CloudFront
-      // Not sure how to configure CloudFront to allow download directly from url
-      const response = await fetch("/api/get-media-url-permanent-bucket", {
+      // Determine which key to use for download
+      const isStaticImage = !video_key;
+      const objectKey = isStaticImage ? original_image_key : video_key;
+
+      if (!objectKey) {
+        throw new Error("No media key available for download");
+      }
+
+      // Fetch the S3 signed URL from your API
+      const response = await fetch("/api  /get-media-url-permanent-bucket", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ objectKey: video_key }), // Pass the video key
+        body: JSON.stringify({ objectKey }), // Pass the appropriate key
       });
 
       if (!response.ok) {
@@ -83,29 +83,61 @@ const VideoPopup: React.FC<VideoPopupProps> = ({
 
       const { mediaUrl } = await response.json();
 
-      // Ensure the filename is provided (extract from mediaUrl or default to video.mp4)
-      const filename = video_key.split("/").pop() || "video.mp4";
+      // Determine file extension and create appropriate filename
+      const originalFilename = objectKey.split("/").pop() || "";
+      let filename = originalFilename;
 
-      // Fetch the file as a Blob
+      // If no extension in filename, add appropriate extension based on content type
+      if (!filename.includes(".")) {
+        filename = isStaticImage ? `${filename}.jpg` : `${filename}.mp4`;
+      }
+
+      // Fetch the file content
       const fileResponse = await fetch(mediaUrl);
+
+      // Get content type from response
+      const contentType = fileResponse.headers.get("content-type");
+
+      // Create appropriate extension based on content type if filename doesn't have one
+      if (!filename.includes(".")) {
+        const extension = getExtensionFromContentType(contentType);
+        filename = `${filename}${extension}`;
+      }
+
       const blob = await fileResponse.blob();
 
-      // Create a URL for the Blob and trigger the download
+      // Create and trigger download
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
       link.download = filename;
 
-      // Trigger the download
+      // Append to body, click, and cleanup
       document.body.appendChild(link);
       link.click();
-
-      // Cleanup
       URL.revokeObjectURL(link.href);
       document.body.removeChild(link);
     } catch (error) {
       console.error("Download failed:", error);
-      // Optional: Show a user-friendly error message
+      // You might want to add a toast notification or other user feedback here
     }
+  };
+
+  // Helper function to determine file extension from content type
+  const getExtensionFromContentType = (contentType: string | null): string => {
+    if (!contentType) return ".bin";
+
+    const extensionMap: { [key: string]: string } = {
+      "image/jpeg": ".jpg",
+      "image/jpg": ".jpg",
+      "image/png": ".png",
+      "image/gif": ".gif",
+      "image/webp": ".webp",
+      "video/mp4": ".mp4",
+      "video/webm": ".webm",
+      "video/quicktime": ".mov",
+    };
+
+    return extensionMap[contentType] || ".bin";
   };
 
   const handleDownloadClick = async () => {
@@ -151,13 +183,27 @@ const VideoPopup: React.FC<VideoPopupProps> = ({
         </button>
 
         <div className="flex-1 bg-black flex justify-center items-center p-4">
-          <video
-            ref={videoRef}
-            src={video_url}
-            className="w-full h-full object-contain rounded-3xl"
-            controls
-            autoPlay
-          />
+          {isStaticImage ? (
+            <div className="relative w-full h-full">
+              <Image
+                src={original_image_url || ''}
+                alt="Media content"
+                fill
+                sizes="60vw"
+                priority
+                className="rounded-3xl object-contain"
+                style={{ backgroundColor: 'black' }}
+              />
+            </div>
+          ) : (
+            <video
+              ref={videoRef}
+              src={video_url}
+              className="w-full h-full object-contain rounded-3xl"
+              controls
+              autoPlay
+            />
+          )}
         </div>
 
         <div className="flex-1 flex flex-col p-6 overflow-y-auto">

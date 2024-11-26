@@ -50,7 +50,6 @@
   overflow: hidden; /* Hide overflow text */
   text-overflow: ellipsis; /* Add ... at the end of overflow */
   /* Optional: for multi-line ellipsis (2 lines) */
-
 }
 
 .footer {
@@ -68,3 +67,24 @@
   box-sizing: border-box; /* Include padding in width calculation */
 }
 
+.imageContainer {
+  width: 100%;
+  aspect-ratio: 1; /* Force square container */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: #f5f5f5; /* Optional: light background for empty spaces */
+}
+
+.image {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto !important; /* Override Next.js inline styles */
+  height: auto !important; /* Override Next.js inline styles */
+}
+
+/* Optional: Add hover effect */
+.imageContainer:hover .image {
+  transform: scale(1.05);
+}
