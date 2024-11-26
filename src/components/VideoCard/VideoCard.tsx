@@ -27,6 +27,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
   const delayRef = useRef<number | null>(null);
 
   const isStaticImage = !video_key;
+  const isVideoOnly = !original_image_key && video_key;
 
   useEffect(() => {
     const fetchMediaUrls = async () => {
@@ -56,10 +57,8 @@ const VideoCard: React.FC<VideoCardProps> = ({
         if (video_key) {
           setVideoUrl(data[0].video_url);
         }
-
+        if (isVideoOnly) return;
         setOriginalImageUrl(data[isStaticImage ? 0 : 1].image_url);
-        // if (isStaticImage) console.log("originalImageUrl");
-        console.log(originalImageUrl);
       } catch (error) {
         console.error("Error fetching media URLs:", error);
       }
@@ -143,7 +142,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
                     style={{
                       maxWidth: "100%",
                       height: "auto",
-                      objectFit: "contain",
+                      objectFit: "cover",
                     }}
                   />
                 </div>
