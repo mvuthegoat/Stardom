@@ -16,7 +16,10 @@ import PublishContent from "../PublishContent/PublishContent";
 import {
   checkGenerationLimit,
   incrementGenerationCount,
+  getDeviceId,
+  addBonusGeneration,
 } from "../../utils/usageLimit";
+import { FeedbackForm, Feedback } from "../FeedbackForm/FeedbackForm";
 
 const CreateFunV1 = () => {
   const [imageUrl, setImageUrl] = useState<string | null>(null); // for img-to-video API call
@@ -28,6 +31,8 @@ const CreateFunV1 = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [remainingGenerations, setRemainingGenerations] = useState<number>(3);
+  const [showFeedbackForm, setShowFeedbackForm] = useState(false);
+  const [hasBonusGeneration, setHasBonusGeneration] = useState(false);
 
   useEffect(() => {
     const { remaining } = checkGenerationLimit();
@@ -94,6 +99,40 @@ const CreateFunV1 = () => {
     setLoading(false);
   };
 
+  // Add useEffect to check bonus generation status
+  useEffect(() => {
+    const { hasBonusGeneration } = checkGenerationLimit();
+    setHasBonusGeneration(hasBonusGeneration);
+  }, []);
+
+  // Add feedback submission handler
+  const handleFeedbackSubmit = async (feedback: Feedback) => {
+    try {
+      // Send feedback to your backend/database
+      await fetch("/api/feedback", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...feedback,
+          deviceId: getDeviceId(),
+          timestamp: new Date().toISOString(),
+        }),
+      });
+
+      // Grant bonus generation
+      addBonusGeneration();
+      const { remaining } = checkGenerationLimit();
+      setRemainingGenerations(remaining);
+      setHasBonusGeneration(true);
+      setShowFeedbackForm(false);
+    } catch (error) {
+      console.error("Error submitting feedback:", error);
+      setError("Failed to submit feedback. Please try again.");
+    }
+  };
+
   return (
     <div className={styles.createFunContainer}>
       <div className={styles.inputSection}>
@@ -103,16 +142,41 @@ const CreateFunV1 = () => {
         <div className="text-sm text-gray-600">
           {remainingGenerations > 0 ? (
             <span>{remainingGenerations} free generations remaining</span>
+          ) : !hasBonusGeneration ? (
+            <div className="bg-yellow-50 p-3 rounded-lg space-y-2">
+              <p className="text-yellow-800">
+                You&#39;ve reached your free limit
+              </p>
+              <button
+                onClick={() => setShowFeedbackForm(true)}
+                className="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600 text-sm w-full"
+              >
+                Get 1 more free generation (share feedback)
+              </button>
+              <a
+                href="https://twitter.com/messages/compose?recipient_id=1274973675393961984"
+                className="twitter-dm-button text-blue-500 hover:underline block text-center"
+                data-screen-name="@mvu_goat"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Message us on X for more!
+              </a>
+            </div>
           ) : (
             <div className="bg-yellow-50 p-3 rounded-lg">
-              <p className="text-yellow-800">You&#39;ve reached your free limit</p>
+              <p className="text-yellow-800">
+                You&#39;ve reached your free limit
+              </p>
               <a
                 href="https://twitter.com/messages/compose?recipient_id=1274973675393961984"
                 className="twitter-dm-button text-blue-500 hover:underline mt-2 inline-block"
                 data-screen-name="@mvu_goat"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                Message us on X
-              </a>
+                Message us on X for more!
+                </a>
             </div>
           )}
         </div>
@@ -149,6 +213,13 @@ const CreateFunV1 = () => {
           isDisabled={!videoUrl}
         />
       </div>
+      {/* Feedback Form Modal */}
+      {showFeedbackForm && (
+        <FeedbackForm
+          onSubmit={handleFeedbackSubmit}
+          onClose={() => setShowFeedbackForm(false)}
+        />
+      )}
     </div>
   );
 };
