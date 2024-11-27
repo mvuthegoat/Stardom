@@ -93,7 +93,7 @@ const CreateFun = () => {
         <PublishContent
           imageObjectKey={imageObjectKey}
           videoObjectKey={videoObjectKey}
-          description={prompt}
+          // description={prompt}
           isDisabled={!videoUrl}
         />
       </div>

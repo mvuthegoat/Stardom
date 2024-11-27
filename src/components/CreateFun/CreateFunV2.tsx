@@ -13,6 +13,10 @@ import styles from "./CreateFun.module.css";
 import { uploadFileToTemporaryS3 } from "../../utils/s3Utils";
 import { extractVideoFileObject } from "../../utils/extractVideoFileObject";
 import PublishContent from "../PublishContent/PublishContent";
+import {
+  checkGenerationLimit,
+  incrementGenerationCount,
+} from "../../utils/usageLimit";
 
 const CreateFunV2 = () => {
   const [imageUrl, setImageUrl] = useState<string | null>(null); // for img-to-video API call
@@ -23,6 +27,7 @@ const CreateFunV2 = () => {
   const [videoUrl, setVideoUrl] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const [remainingGenerations, setRemainingGenerations] = useState<number>(2);
 
   const handleFileUpload = async (file: File | null) => {
     if (!file) {
@@ -67,9 +72,23 @@ const CreateFunV2 = () => {
     processVideo();
   }, [videoUrl]);
 
+  useEffect(() => {
+    const { remaining } = checkGenerationLimit();
+    setRemainingGenerations(remaining);
+  }, []);
+
   const onGenerate = async () => {
     if (!imageUrl) {
       setError("Please upload an image before generating.");
+      return;
+    }
+
+    // Check generation limit
+    const { canGenerate } = checkGenerationLimit();
+    if (!canGenerate) {
+      setError(
+        "You've reached your free generation limit. Please contact us for more!"
+      );
       return;
     }
 
@@ -105,9 +124,11 @@ const CreateFunV2 = () => {
       pollTaskStatus(task.id);
     } catch (err: Error | unknown) {
       console.error("Error generating video:", err);
-      setError(
-        err instanceof Error ? err.message : "An unexpected error occurred."
-      );
+      if (!error) {
+        setError(
+          err instanceof Error ? err.message : "An unexpected error occurred."
+        );
+      }
     } finally {
       //   setLoading(false);
     }
@@ -135,6 +156,10 @@ const CreateFunV2 = () => {
           clearInterval(interval);
           setVideoUrl(task.output[0]); // Use the first output URL
           setLoading(false);
+          // Increment count only after confirmed success
+          incrementGenerationCount();
+          const { remaining } = checkGenerationLimit();
+          setRemainingGenerations(remaining);
         } else if (task.status === "FAILED") {
           clearInterval(interval);
           setError(`Task failed: ${task.failure || "Unknown reason."}`);
@@ -155,6 +180,22 @@ const CreateFunV2 = () => {
         <UploadBox onFileSelect={handleFileUpload} />
         <PromptBox prompt={prompt} setPrompt={setPrompt} />
         <ConfigButton duration={duration} setDuration={setDuration} />
+        <div className="text-sm text-gray-600">
+          {remainingGenerations > 0 ? (
+            <span>{remainingGenerations} free generations remaining</span>
+          ) : (
+            <div className="bg-yellow-50 p-3 rounded-lg">
+              <p className="text-yellow-800">You&#39;ve reached your free limit</p>
+              <a
+                href="https://twitter.com/messages/compose?recipient_id=1274973675393961984"
+                className="twitter-dm-button text-blue-500 hover:underline mt-2 inline-block"
+                data-screen-name="@mvu_goat"
+              >
+                Message us on X
+              </a>
+            </div>
+          )}
+        </div>
         <GenerateButton onGenerate={onGenerate} />
         {loading && (
           <div className="flex items-center gap-2 text-black">
@@ -184,7 +225,7 @@ const CreateFunV2 = () => {
         <PublishContent
           imageObjectKey={imageObjectKey}
           videoObjectKey={videoObjectKey}
-          description={prompt}
+          // description={prompt}
           isDisabled={!videoUrl}
         />
       </div>

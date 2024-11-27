@@ -13,6 +13,10 @@ import styles from "./CreateFun.module.css";
 import { uploadFileToTemporaryS3 } from "@/utils/s3Utils";
 import { extractVideoFileObject } from "../../utils/extractVideoFileObject";
 import PublishContent from "../PublishContent/PublishContent";
+import {
+  checkGenerationLimit,
+  incrementGenerationCount,
+} from "../../utils/usageLimit";
 
 const CreateFunV1 = () => {
   const [imageUrl, setImageUrl] = useState<string | null>(null); // for img-to-video API call
@@ -23,6 +27,12 @@ const CreateFunV1 = () => {
   const [videoUrl, setVideoUrl] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const [remainingGenerations, setRemainingGenerations] = useState<number>(3);
+
+  useEffect(() => {
+    const { remaining } = checkGenerationLimit();
+    setRemainingGenerations(remaining);
+  }, []);
 
   const handleFileUpload = async (file: File | null) => {
     if (!file) {
@@ -67,10 +77,20 @@ const CreateFunV1 = () => {
       setError("Please upload an image before generating.");
       return;
     }
+    const { canGenerate, remaining } = checkGenerationLimit();
+    if (!canGenerate) {
+      setError(
+        "You've reached your free generation limit. Please contact us for more!"
+      );
+      return;
+    }
 
     setLoading(true);
     setError("");
-    setVideoUrl("memevids/58e95b11-76c8-4386-8981-c2bc38bfa7ac_generated_video.mp4");
+    setVideoUrl("memevids/pim.mp4");
+    // Increment count only after successful API call
+    incrementGenerationCount();
+    setRemainingGenerations(remaining - 1);
     setLoading(false);
   };
 
@@ -80,6 +100,22 @@ const CreateFunV1 = () => {
         <UploadBox onFileSelect={handleFileUpload} />
         <PromptBox prompt={prompt} setPrompt={setPrompt} />
         <ConfigButton duration={duration} setDuration={setDuration} />
+        <div className="text-sm text-gray-600">
+          {remainingGenerations > 0 ? (
+            <span>{remainingGenerations} free generations remaining</span>
+          ) : (
+            <div className="bg-yellow-50 p-3 rounded-lg">
+              <p className="text-yellow-800">You&#39;ve reached your free limit</p>
+              <a
+                href="https://twitter.com/messages/compose?recipient_id=1274973675393961984"
+                className="twitter-dm-button text-blue-500 hover:underline mt-2 inline-block"
+                data-screen-name="@mvu_goat"
+              >
+                Message us on X
+              </a>
+            </div>
+          )}
+        </div>
         <GenerateButton onGenerate={onGenerate} />
         {loading && (
           <div className="flex items-center gap-2 text-black">
@@ -109,7 +145,7 @@ const CreateFunV1 = () => {
         <PublishContent
           imageObjectKey={imageObjectKey}
           videoObjectKey={videoObjectKey}
-          description={prompt}
+          // description={prompt}
           isDisabled={!videoUrl}
         />
       </div>
