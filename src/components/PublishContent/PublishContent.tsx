@@ -11,17 +11,19 @@ import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { AlertCircle, CheckCircle2 } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "../../components/ui/alert";
+import { Textarea } from "../ui/textarea";
 
 interface PublishContentProps {
   videoObjectKey: string | null;
   imageObjectKey: string | null;
-  description: string | undefined;
+  // description: string | undefined;
   isDisabled: boolean;
 }
 
 interface FormData {
   title: string;
   meme_origin: string;
+  description: string;
   crypto_address: string;
   dex_chart: string;
 }
@@ -35,7 +37,7 @@ interface FormErrors {
 const PublishContent: React.FC<PublishContentProps> = ({
   videoObjectKey,
   imageObjectKey,
-  description,
+  // description,
   isDisabled,
 }) => {
   const router = useRouter();
@@ -47,6 +49,7 @@ const PublishContent: React.FC<PublishContentProps> = ({
   const [formData, setFormData] = useState<FormData>({
     title: "",
     meme_origin: "",
+    description: "",
     crypto_address: "",
     dex_chart: "",
   });
@@ -113,7 +116,7 @@ const PublishContent: React.FC<PublishContentProps> = ({
         ...formData,
         video_key: videoObjectKey,
         original_image_key: imageObjectKey,
-        description: description,
+        // description: description,
         creator_id,
         likes: 0,
       };
@@ -189,7 +192,7 @@ const PublishContent: React.FC<PublishContentProps> = ({
               <div>
                 <Input
                   name="title"
-                  placeholder="Give your video a catchy title *"
+                  placeholder="Give your content a catchy title *"
                   className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                     formErrors.title ? "border-red-500" : "border-gray-200"
                   }`}
@@ -201,6 +204,16 @@ const PublishContent: React.FC<PublishContentProps> = ({
                     {formErrors.title}
                   </p>
                 )}
+              </div>
+
+              <div>
+                <Textarea
+                  name="description"
+                  placeholder="Add a description for your content"
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-[100px]"
+                  value={formData.description}
+                  onChange={handleInputChange}
+                />
               </div>
 
               <div>

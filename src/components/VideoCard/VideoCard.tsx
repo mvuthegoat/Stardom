@@ -4,6 +4,7 @@ import React, { useRef, useState, useEffect } from "react";
 import styles from "./VideoCard.module.css";
 import VideoPopup from "../VideoPopup/VideoPopup";
 import { Video } from "../../types/videoTypes";
+import Image from "next/image"; 
 
 export type VideoCardProps = Omit<Video, "creator_id">;
 
@@ -23,75 +24,89 @@ const VideoCard: React.FC<VideoCardProps> = ({
   const [originalImageUrl, setOriginalImageUrl] = useState<string | null>(null);
   const [showPopup, setShowPopup] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const delayRef = useRef<number | null>(null); // Ref to store timeout ID
+  const delayRef = useRef<number | null>(null);
+
+  const isStaticImage = !video_key;
+  const isVideoOnly = !original_image_key && video_key;
 
   useEffect(() => {
     const fetchMediaUrls = async () => {
       try {
-        // Fetch both video and image URLs in parallel
-        const [videoResponse, imageResponse] = await Promise.all([
-          fetch(
-            `/api/get-media-url-video-card?object_key=${video_key}&type=video`
-          ),
-          fetch(
-            `/api/get-media-url-video-card?object_key=${original_image_key}&type=image`
-          ),
-        ]);
+        // Fetch URLs based on content type
+        const promises = [];
 
-        const videoData = await videoResponse.json();
-        const imageData = await imageResponse.json();
+        if (video_key) {
+          promises.push(
+            fetch(
+              `/api/get-media-url-video-card?object_key=${video_key}&type=video`
+            )
+          );
+        }
 
-        setVideoUrl(videoData.video_url); // Update the video URL state
-        setOriginalImageUrl(imageData.image_url); // Update the image URL state
+        if (original_image_key) {
+          promises.push(
+            fetch(
+              `/api/get-media-url-video-card?object_key=${original_image_key}&type=image`
+            )
+          );
+        }
+
+        const responses = await Promise.all(promises);
+        const data = await Promise.all(responses.map((r) => r.json()));
+
+        if (video_key) {
+          setVideoUrl(data[0].video_url);
+        }
+        if (isVideoOnly) return;
+        setOriginalImageUrl(data[isStaticImage ? 0 : 1].image_url);
       } catch (error) {
         console.error("Error fetching media URLs:", error);
       }
     };
 
-    // Trigger fetch only if keys are present
-    if (video_key && original_image_key) {
+    if (video_key || original_image_key) {
       fetchMediaUrls();
     }
-  }, [video_key, original_image_key]);
+  }, [video_key, original_image_key, isStaticImage, isVideoOnly]);
 
-  // Set the last frame as thumbnail when video loads
+  // Video-specific handlers
   const handleLoadedMetadata = () => {
     const video = videoRef.current;
     if (video) {
-      // Set to the last frame
       video.currentTime = video.duration;
       setIsLoaded(true);
     }
   };
 
   const handleMouseEnter = () => {
-    const video = videoRef.current;
-    if (video && isLoaded) {
-      video.currentTime = 0; // Seek to the first frame
-      video.pause();
+    if (!isStaticImage) {
+      const video = videoRef.current;
+      if (video && isLoaded) {
+        video.currentTime = 0;
+        video.pause();
 
-      // Start playing after a slight delay (e.g., 500ms)
-      delayRef.current = window.setTimeout(() => {
-        video.play().catch((error) => {
-          console.warn("Video play interrupted", error);
-        });
-      }, 300); // Adjust the delay as desired
+        delayRef.current = window.setTimeout(() => {
+          video.play().catch((error) => {
+            console.warn("Video play interrupted", error);
+          });
+        }, 300);
+      }
     }
   };
 
   const handleMouseLeave = () => {
-    const video = videoRef.current;
-    if (video && isLoaded) {
-      video.pause();
+    if (!isStaticImage) {
+      const video = videoRef.current;
+      if (video && isLoaded) {
+        video.pause();
 
-      // Clear any existing delay to prevent it from starting after mouse leaves
-      if (delayRef.current !== null) {
-        clearTimeout(delayRef.current);
-        delayRef.current = null;
+        if (delayRef.current !== null) {
+          clearTimeout(delayRef.current);
+          delayRef.current = null;
+        }
+
+        video.currentTime = video.duration;
       }
-
-      // Set back to last frame when mouse leaves
-      video.currentTime = video.duration;
     }
   };
 
@@ -113,7 +128,28 @@ const VideoCard: React.FC<VideoCardProps> = ({
           onClick={handleClick}
         >
           <div className={styles.videoWrapper}>
-            {videoUrl ? (
+            {isStaticImage ? (
+              originalImageUrl ? (
+                <div className={styles.imageContainer}>
+                  {" "}
+                  {/* Add this wrapper div */}
+                  <Image
+                    src={originalImageUrl}
+                    alt={title}
+                    width={400} // Set a reasonable fixed width for the card
+                    height={400} // Same height for square boundary
+                    className={styles.image}
+                    style={{
+                      maxWidth: "100%",
+                      height: "auto",
+                      objectFit: "cover",
+                    }}
+                  />
+                </div>
+              ) : (
+                <div>Loading...</div>
+              )
+            ) : videoUrl ? (
               <video
                 ref={videoRef}
                 src={videoUrl}
@@ -130,7 +166,6 @@ const VideoCard: React.FC<VideoCardProps> = ({
         </div>
         <div className={styles.footer}>
           <h3 className={styles.videoTitle}>{title}</h3>
-          {/* <span className={styles.likes}>▶ {likes}</span> */}
         </div>
       </div>
       {showPopup && (
@@ -140,6 +175,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
           video_url={videoUrl || ""}
           video_key={video_key}
           original_image_url={originalImageUrl || ""}
+          original_image_key={original_image_key}
           likes={likes}
           crypto_address={crypto_address}
           meme_origin={meme_origin}
@@ -151,4 +187,5 @@ const VideoCard: React.FC<VideoCardProps> = ({
     </>
   );
 };
+
 export default VideoCard;

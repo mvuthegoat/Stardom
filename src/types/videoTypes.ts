@@ -3,8 +3,8 @@ export interface Video {
   creator_id: string;
   title: string;
   description?: string; // Optional description for popup details
-  video_key: string;
-  original_image_key: string;
+  video_key?: string;
+  original_image_key?: string;
   likes: number;
   crypto_address?: string;
   meme_origin: string; // Updated to match database column
