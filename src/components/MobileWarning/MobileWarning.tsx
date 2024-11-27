@@ -2,7 +2,6 @@
 
 // MobileWarning.tsx
 import React, { useState, useEffect } from "react";
-import { Laptop } from "lucide-react";
 
 const MobileWarning = () => {
   const [isMobile, setIsMobile] = useState(false);
