@@ -15,7 +15,7 @@ const PromptBox: React.FC<PromptBoxProps> = ({ prompt, setPrompt }) => {
         onChange={(e) =>
           setPrompt(e.target.value.trim() === "" ? undefined : e.target.value)
         } // Convert empty input back to null
-        placeholder={`Turn your meme image into videos.....\nExample: "Camera shows a green creature, FWOG, going to Mars with his friends"`}
+        placeholder={`Prompt to turn your meme image into videos.....\nExample: "Camera shows a green creature, FWOG, going to Mars with his friends"`}
       />
     </div>
   );
