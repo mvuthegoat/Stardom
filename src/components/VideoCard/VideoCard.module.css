@@ -88,3 +88,42 @@
 .imageContainer:hover .image {
   transform: scale(1.05);
 }
+
+@media (max-width: 600px) {
+  .videoCardContainer {
+    position: relative;
+    width: 100%;
+    /* Add padding at bottom to account for footer height */
+    padding-bottom: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .videoCard {
+    width: 100%;
+    margin-bottom: 0; /* Remove margin as container handles spacing */
+  }
+
+  .footer {
+    position: absolute;
+    bottom: 0; /* Position at bottom of container */
+    left: 0;
+    width: 100%;
+    padding: 0.5rem;
+    background-color: transparent;
+    /* Remove negative bottom positioning */
+    height: 2.5rem; /* Fixed height for footer */
+  }
+
+  .videoTitle {
+    font-size: 0.875rem;
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+    max-height: 2.4em;
+    padding: 0 0.25rem; /* Add slight padding on sides */
+  }
+}
