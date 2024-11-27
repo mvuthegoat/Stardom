@@ -67,7 +67,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
     if (video_key || original_image_key) {
       fetchMediaUrls();
     }
-  }, [video_key, original_image_key, isStaticImage]);
+  }, [video_key, original_image_key, isStaticImage, isVideoOnly]);
 
   // Video-specific handlers
   const handleLoadedMetadata = () => {
