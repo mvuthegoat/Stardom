@@ -3,7 +3,7 @@ import { Video } from "../types/videoTypes";
 // Fetch discovery feed videos
 export async function fetchDiscoveryFeed(
   page: number = 1,
-  limit: number = 10
+  limit: number = 30
 ): Promise<Video[]> {
   const response = await fetch(`/api/feed/videos?page=${page}&limit=${limit}`);
   if (!response.ok) {
