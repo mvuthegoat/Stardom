@@ -171,31 +171,28 @@ const VideoPopup: React.FC<VideoPopupProps> = ({
       aria-labelledby="video-popup-title"
     >
       <div
-        // Add responsive classes for width and height
-        className="bg-white w-[60vw] md:w-[60vw] w-full h-screen md:h-[85vh] rounded-none md:rounded-3xl flex flex-col md:flex-row relative shadow-lg outline-none overflow-hidden"
+        className="bg-white w-[60vw] h-[85vh] rounded-3xl flex relative shadow-lg outline-none overflow-hidden"
         onClick={(e) => e.stopPropagation()}
         ref={popupRef}
       >
         <button
-          // Adjust close button positioning
-          className="absolute top-4 right-4 text-gray-600 hover:text-red-500 z-10 bg-white/80 rounded-full p-2 md:p-0 md:bg-transparent"
+          className="absolute top-4 right-4 text-gray-600 hover:text-red-500 z-10"
           onClick={onClose}
           aria-label="Close Popup"
         >
           <FaTimes className="text-2xl" />
         </button>
 
-        {/* Media section - adjust height for mobile */}
-        <div className="flex-1 md:flex-1 h-[40vh] md:h-auto bg-black flex justify-center items-center p-0 md:p-4">
+        <div className="flex-1 bg-black flex justify-center items-center p-4">
           {isStaticImage ? (
             <div className="relative w-full h-full">
               <Image
                 src={original_image_url || ""}
                 alt="Media content"
                 fill
-                sizes="(max-width: 768px) 100vw, 60vw"
+                sizes="60vw"
                 priority
-                className="rounded-none md:rounded-3xl object-contain"
+                className="rounded-3xl object-contain"
                 style={{ backgroundColor: "black" }}
               />
             </div>
@@ -203,16 +200,16 @@ const VideoPopup: React.FC<VideoPopupProps> = ({
             <video
               ref={videoRef}
               src={video_url}
-              className="w-full h-full object-contain rounded-none md:rounded-3xl"
+              className="w-full h-full object-contain rounded-3xl"
               controls
               autoPlay
             />
           )}
         </div>
-        {/* Content section */}
-        <div className="flex-1 md:flex-1 flex flex-col p-4 md:p-6 overflow-y-auto">
-          {/* Top action bar */}
-          <div className="flex items-center justify-between mb-6 md:mb-12 pr-4 md:pr-8">
+
+        <div className="flex-1 flex flex-col p-6 overflow-y-auto">
+          {/* Top action bar - adjusted width to prevent overlap */}
+          <div className="flex items-center justify-between mb-12 pr-8">
             <div className="flex items-center gap-4">
               <button
                 onClick={handleLike}
@@ -244,27 +241,22 @@ const VideoPopup: React.FC<VideoPopupProps> = ({
             </div>
             <button
               onClick={() => router.push("/create-fun")}
-              className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white py-2 px-4 hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed rounded-full text-sm font-medium h-[2.5rem] md:h-[3rem]"
+              className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white py-2 px-4 hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed rounded-full text-sm font-medium h-[3rem]"
             >
               Tell your story
             </button>
           </div>
 
           {/* Content section - increased top spacing */}
-          <div className="space-y-6 md:space-y-8">
-            <h2
-              className="text-xl md:text-2xl font-bold"
-              id="video-popup-title"
-            >
+          <div className="space-y-8 mt-4">
+            <h2 className="text-2xl font-bold" id="video-popup-title">
               {title}
             </h2>
 
-            <div className="space-y-4 md:space-y-6">
-              <p className="text-sm md:text-base text-gray-700">
-                {description}
-              </p>
+            <div className="space-y-6">
+              <p className="text-gray-700">{description}</p>
 
-              <div className="space-y-3 md:space-y-4">
+              <div className="space-y-4">
                 <div className="flex items-center">
                   <span className="text-gray-500 w-32">Original Meme:</span>
                   <button

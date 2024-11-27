@@ -210,3 +210,56 @@
     font-size: 0.9rem;
   }
 }
+
+@media (max-width: 768px) {
+  .overlay {
+    padding: 0; /* Remove any padding on mobile */
+  }
+
+  /* Target the inner popup div */
+  .overlay > div {
+    width: 100% !important; /* Override the inline 60vw */
+    height: 100% !important; /* Full height on mobile */
+    margin: 0;
+    border-radius: 0 !important; /* Remove rounded corners on mobile */
+
+    /* Change layout to vertical on mobile */
+    flex-direction: column !important;
+  }
+
+  /* Adjust the media container */
+  .overlay > div > div:first-child {
+    flex: 0 0 50% !important; /* Take up half the height */
+    padding: 0 !important; /* Remove padding */
+  }
+
+  /* Adjust the info section */
+  .overlay > div > div:last-child {
+    flex: 1 !important;
+    padding: 1rem !important;
+  }
+
+  /* Make the close button more accessible on mobile */
+  .overlay > div > button {
+    top: 1rem !important;
+    right: 1rem !important;
+    background: rgba(255, 255, 255, 0.8) !important;
+    padding: 0.5rem !important;
+    border-radius: 50% !important;
+  }
+
+  /* Adjust the action bar */
+  .overlay > div > div > div > div:first-child {
+    margin-bottom: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
