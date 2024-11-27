@@ -3,14 +3,7 @@
 import React, { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useDropzone } from "react-dropzone";
-import {
-  Upload,
-  X,
-  AlertCircle,
-  CheckCircle2,
-  Image,
-  Film,
-} from "lucide-react";
+import { X, AlertCircle, CheckCircle2, Image, Film } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -140,8 +133,8 @@ export default function UploadMemePage() {
   const validateForm = () => {
     const errors: Record<string, string> = {};
     if (!formData.title.trim()) errors.title = "Title is required";
-    if (!formData.description.trim())
-      errors.description = "Description is required";
+    // if (!formData.description.trim())
+    //   errors.description = "Description is required";
     if (!formData.meme_origin.trim())
       errors.meme_origin = "Meme origin is required";
     if (!uploadedFile?.objectKey) errors.file = "Please upload a file";
@@ -325,18 +318,18 @@ export default function UploadMemePage() {
           <div>
             <Textarea
               name="description"
-              placeholder="Add a detailed description *"
+              placeholder="Add a detailed description"
               value={formData.description}
               onChange={handleInputChange}
               className={`min-h-[100px] ${
                 formErrors.description ? "border-red-500" : ""
               }`}
             />
-            {formErrors.description && (
+            {/* {formErrors.description && (
               <p className="mt-1 text-sm text-red-500">
                 {formErrors.description}
               </p>
-            )}
+            )} */}
           </div>
 
           <div>
