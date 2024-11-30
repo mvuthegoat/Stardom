@@ -4,7 +4,7 @@ import React from "react";
 import { PageLayout, ScrollToTopFix } from "../components";
 import "./globals.css";
 import { usePathname } from "next/navigation";
-import { MobileWarning } from "../components";
+// import { MobileWarning } from "../components";
 
 const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const pathname = usePathname();
@@ -16,7 +16,7 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <head>{/* Meta tags, fonts, etc. */}</head>
       <body>
         <PageLayout showTabs={showTabs}>{children}</PageLayout>
-        <MobileWarning />
+        {/* <MobileWarning /> */}
       </body>
     </html>
   );
