@@ -1,22 +1,38 @@
 .createFunContainer {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: stretch;
-  /* Stretch items to align vertically */
+  flex-direction: row; /* Desktop default */
   background-color: #ffffff;
   color: #f0f0f0;
   border-radius: 12px;
   padding: 24px;
   width: 90vw;
-  height: 75vh;
+  height: 75vh; /* Desktop default */
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
   gap: 20px;
-  /* Space between sections */
   overflow: hidden;
-    /* Centering */
-    margin: 0 auto;
+  margin: 0 auto;
+}
 
+.inputSection {
+  flex: 0.4; /* Desktop default */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+  padding-right: 20px; /* Desktop default */
+  border-right: 1px solid #2a2a2a; /* Desktop default */
+}
+
+.outputSection {
+  flex: 0.6; /* Desktop default */
+  display: flex;
+  justify-content: center;
+  padding-left: 20px; /* Desktop default */
+  background-color: #ffffff;
+  border-radius: 8px;
+  height: 100%; /* Desktop default */
+  flex-direction: column;
+  gap: 20px;
 }
 
 .body {
@@ -30,28 +46,23 @@
   align-items: center;
 }
 
-.inputSection {
-  flex: 0.4;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  /* Space out elements vertically */
-  height: 100%;
-  /* Full height of the container */
-  gap: 20px;
-  /* Add space between elements */
-  padding-right: 20px;
-  border-right: 1px solid #2a2a2a;
-}
+/* Mobile styles */
+@media (max-width: 1023px) {
+  .createFunContainer {
+    flex-direction: column;
+    height: auto;
+    min-height: 75vh;
+  }
 
-.outputSection {
-  flex: 0.6;
-  display: flex;
-  justify-content: center;
-  padding-left: 20px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  height: 100%;
-  flex-direction: column;
-  gap: 20px;
+  .inputSection {
+    flex: 1;
+    padding-right: 0;
+    border-right: none;
+  }
+
+  .outputSection {
+    flex: 1;
+    padding-left: 0;
+    height: 400px;
+  }
 }
