@@ -1,11 +1,11 @@
 export const tabsConfig = [
   {
-    label: "Instant Meme Maker",
+    label: "Upload Your Content",
     path: "/create-fun",
   },
   {
-    label: "Meme It Yourself",
-    path: "/create-fun/upload-your-meme",
+    label: "Instant Meme Maker",
+    path: "/create-fun/instant-meme-maker",
   },
   // Add more tabs here as needed
 ];
