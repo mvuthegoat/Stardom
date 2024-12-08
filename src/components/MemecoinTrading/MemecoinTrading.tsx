@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { BarChart2, TrendingUp, Activity } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -34,15 +34,11 @@ export default function MemecoinTrading({
   cryptoAddress,
 }: MemecoinTradingProps) {
   const [tokenData, setTokenData] = useState<TokenData | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
   const [amount, setAmount] = useState<string>("");
   const [activeTab, setActiveTab] = useState<"buy" | "sell">("buy");
 
   useEffect(() => {
     const fetchTokenData = async () => {
-      setLoading(true);
-      setError(null);
       try {
         const response = await fetch(
           `/api/coingecko-getcoinDataFromAddress/${cryptoAddress}`
@@ -61,11 +57,7 @@ export default function MemecoinTrading({
           tokenName: resData.name || "Unknown Token",
         });
       } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "An unknown error occurred."
-        );
-      } finally {
-        setLoading(false);
+        console.error("Error fetching token data:", err);
       }
     };
     fetchTokenData();
@@ -136,7 +128,6 @@ export default function MemecoinTrading({
                           alt="SOL"
                           className="w-5 h-5 rounded-full"
                         />
-                        {/* <span className="text-gray-600">SOL</span> */}
                       </>
                     ) : (
                       <>
@@ -257,7 +248,7 @@ export default function MemecoinTrading({
               </div>
               <div>
                 <CardTitle className="text-lg font-semibold text-gray-800">
-                  {tokenData?.tokenName || "Loading..."}
+                  {tokenData?.tokenName || "--"}
                 </CardTitle>
               </div>
             </div>
@@ -271,7 +262,7 @@ export default function MemecoinTrading({
                 <div>
                   <p className="text-xs text-gray-500">Market Cap</p>
                   <p className="text-sm font-medium text-gray-800">
-                    {tokenData?.marketCap || "Loading..."}
+                    {tokenData?.marketCap || "--"}
                   </p>
                 </div>
               </div>
@@ -282,7 +273,7 @@ export default function MemecoinTrading({
                 <div>
                   <p className="text-xs text-gray-500">Volume (24h)</p>
                   <p className="text-sm font-medium text-gray-800">
-                    {tokenData?.totalVolume || "Loading..."}
+                    {tokenData?.totalVolume || "--"}
                   </p>
                 </div>
               </div>
@@ -293,7 +284,7 @@ export default function MemecoinTrading({
                 <div>
                   <p className="text-xs text-gray-500">Price Change (24h)</p>
                   <p className="text-sm font-medium text-gray-800">
-                    {tokenData?.priceChange24hPercent || "Loading..."}
+                    {tokenData?.priceChange24hPercent || "--"}
                   </p>
                 </div>
               </div>
